@@ -11,6 +11,7 @@ interface StoryPanel {
   description: string;
   imageSrc: string;
   imageAlt: string;
+  imagePosition?: string;
   stat?: { value: string; label: string };
 }
 
@@ -21,6 +22,7 @@ const PANELS: StoryPanel[] = [
       'Cada huevo comienza en granjas sustentables donde las gallinas viven en libertad, con espacio para moverse, alimentarse naturalmente y producir huevos de calidad excepcional.',
     imageSrc: '/images/hero/story-origin.webp',
     imageAlt: 'Granja sustentable con gallinas en libertad',
+    imagePosition: 'center center',
   },
   {
     title: 'Selecci\u00f3n',
@@ -28,6 +30,7 @@ const PANELS: StoryPanel[] = [
       'Un proceso de clasificaci\u00f3n riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.',
     imageSrc: '/images/hero/story-selection.webp',
     imageAlt: 'Huevos siendo clasificados por tama\u00f1o y calidad',
+    imagePosition: 'center 75%',
     stat: { value: '2.400+', label: 'huevos seleccionados por d\u00eda' },
   },
   {
@@ -36,6 +39,7 @@ const PANELS: StoryPanel[] = [
       'Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de d\u00f3nde viene tu alimento.',
     imageSrc: '/images/hero/story-table.webp',
     imageAlt: 'Plato gourmet preparado con huevos frescos',
+    imagePosition: 'center center',
   },
 ];
 
@@ -151,8 +155,11 @@ export function StorySection() {
                 {/* Image side */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-elevated">
                   <div
-                    className="story-image absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${panel.imageSrc})` }}
+                    className="story-image absolute inset-0 bg-cover"
+                    style={{
+                      backgroundImage: `url(${panel.imageSrc})`,
+                      backgroundPosition: panel.imagePosition ?? 'center center',
+                    }}
                     role="img"
                     aria-label={panel.imageAlt}
                   />
@@ -193,8 +200,11 @@ export function StorySection() {
           <div key={panel.title} className="story-panel-mobile">
             <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-bg-elevated">
               <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${panel.imageSrc})` }}
+                className="absolute inset-0 bg-cover"
+                style={{
+                  backgroundImage: `url(${panel.imageSrc})`,
+                  backgroundPosition: panel.imagePosition ?? 'center center',
+                }}
                 role="img"
                 aria-label={panel.imageAlt}
               />
