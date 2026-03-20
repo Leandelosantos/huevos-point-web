@@ -123,9 +123,9 @@ export function ProcessSection() {
     >
       {/* Desktop / Tablet: pinned stepper */}
       <div className="hidden h-screen items-center justify-center md:flex">
-        <div className="relative mx-auto w-full max-w-3xl px-6">
+        <div className="relative mx-auto h-56 w-full max-w-3xl px-6">
           {/* Section label */}
-          <p className="absolute -top-20 left-6 font-mono text-xs uppercase tracking-widest text-yolk lg:left-0">
+          <p className="absolute -top-16 left-6 font-mono text-xs uppercase tracking-widest text-yolk lg:left-0">
             Proceso
           </p>
 
@@ -134,7 +134,7 @@ export function ProcessSection() {
             return (
               <div
                 key={step.number}
-                className="process-step absolute inset-x-0 flex items-center gap-12 px-6 opacity-0 lg:px-0"
+                className="process-step absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center gap-12 px-6 opacity-0 lg:px-0"
                 style={index === 0 ? {} : { opacity: 0 }}
               >
                 {/* Step icon */}
