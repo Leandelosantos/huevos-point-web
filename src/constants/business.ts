@@ -27,28 +27,28 @@ export const PRODUCT_UNITS = ['unidad', 'media_docena', 'docena', 'maple'] as co
 export const PRODUCT_CATEGORIES = ['campo_libre', 'organico', 'especial', 'premium'] as const;
 
 // ─── Marquee ───
-export const MARQUEE_TEXT = 'HUEVOS POINT \u2022 PREMIUM EGGS \u2022 FARM TO TABLE \u2022 CALIDAD SUPERIOR \u2022 ';
+export const MARQUEE_TEXT = 'HUEVOS POINT • PREMIUM EGGS • FARM TO TABLE • CALIDAD SUPERIOR • ';
 
 // ─── Process Steps ───
 export const PROCESS_STEPS = [
   {
     number: '01',
-    title: 'Recolecci\u00f3n',
-    description: 'Huevos recolectados a mano cada ma\u00f1ana de gallinas en libertad.',
+    title: 'Recolección',
+    description: 'Huevos recolectados a mano cada mañana de gallinas en libertad.',
   },
   {
     number: '02',
-    title: 'Selecci\u00f3n y Clasificaci\u00f3n',
-    description: 'Cada huevo es inspeccionado y clasificado por tama\u00f1o y calidad.',
+    title: 'Selección y Clasificación',
+    description: 'Cada huevo es inspeccionado y clasificado por tamaño y calidad.',
   },
   {
     number: '03',
     title: 'Empaque Premium',
-    description: 'Packaging dise\u00f1ado para proteger y preservar la frescura.',
+    description: 'Packaging diseñado para proteger y preservar la frescura.',
   },
   {
     number: '04',
     title: 'Entrega',
-    description: 'Entrega en el d\u00eda directo a tu puerta. Frescura garantizada.',
+    description: 'Entrega en el día directo a tu puerta. Frescura garantizada.',
   },
 ] as const;

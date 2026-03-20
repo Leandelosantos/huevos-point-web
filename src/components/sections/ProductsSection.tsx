@@ -79,13 +79,13 @@ export function ProductsSection() {
         {/* Section header */}
         <div className="mb-16">
           <p className="font-mono text-xs uppercase tracking-widest text-yolk">
-            Cat\u00e1logo
+            Catálogo
           </p>
           <h2 className="mt-3 font-heading text-section text-text-primary">
             Nuestros Productos
           </h2>
           <p className="mt-4 max-w-lg font-body text-body text-text-secondary">
-            Selecci\u00f3n curada de huevos premium. Cada variedad elegida por su calidad excepcional, origen trazable y sabor incomparable.
+            Selección curada de huevos premium. Cada variedad elegida por su calidad excepcional, origen trazable y sabor incomparable.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export function ProductsSection() {
         {error && (
           <div className="rounded-xl bg-bg-elevated p-8 text-center">
             <p className="font-body text-text-secondary">
-              No pudimos cargar los productos. Intent\u00e1 de nuevo m\u00e1s tarde.
+              No pudimos cargar los productos. Intentá de nuevo más tarde.
             </p>
           </div>
         )}

@@ -65,7 +65,7 @@ export function CTASection() {
       ref={sectionRef}
       id="cta"
       className="cta-section py-section"
-      aria-label="Llamada a la acci\u00f3n"
+      aria-label="Llamada a la acción"
     >
       <div
         ref={contentRef}
@@ -75,11 +75,11 @@ export function CTASection() {
           Calidad que se siente
         </p>
         <h2 className="mt-4 font-display text-section font-bold text-bg-primary">
-          Prob\u00e1 la diferencia
+          Probá la diferencia
         </h2>
         <p className="mt-4 max-w-lg font-body text-body text-bg-primary/70">
-          Huevos seleccionados a mano, de granjas sustentables, entregados en el d\u00eda.
-          Hac\u00e9 tu primer pedido y descubr\u00ed lo que es un huevo de verdad.
+          Huevos seleccionados a mano, de granjas sustentables, entregados en el día.
+          Hacé tu primer pedido y descubrí lo que es un huevo de verdad.
         </p>
         <div className="mt-10">
           <MagneticButton

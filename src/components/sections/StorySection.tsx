@@ -25,18 +25,18 @@ const PANELS: StoryPanel[] = [
     imagePosition: 'center center',
   },
   {
-    title: 'Selecci\u00f3n',
+    title: 'Selección',
     description:
-      'Un proceso de clasificaci\u00f3n riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.',
+      'Un proceso de clasificación riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.',
     imageSrc: '/images/hero/story-selection.webp',
-    imageAlt: 'Huevos siendo clasificados por tama\u00f1o y calidad',
+    imageAlt: 'Huevos siendo clasificados por tamaño y calidad',
     imagePosition: 'center center',
-    stat: { value: '2.400+', label: 'huevos seleccionados por d\u00eda' },
+    stat: { value: '2.400+', label: 'huevos seleccionados por día' },
   },
   {
     title: 'Tu mesa',
     description:
-      'Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de d\u00f3nde viene tu alimento.',
+      'Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de dónde viene tu alimento.',
     imageSrc: '/images/hero/story-table.webp',
     imageAlt: 'Plato gourmet preparado con huevos frescos',
     imagePosition: 'center center',
@@ -140,7 +140,7 @@ export function StorySection() {
       </div>
 
       {/* Desktop / Tablet: horizontal track */}
-      <div className="hidden h-screen w-screen items-center overflow-x-hidden md:flex">
+      <div className="relative hidden h-screen w-screen items-center overflow-hidden md:flex">
         <div
           ref={trackRef}
           className="story-track flex"
@@ -157,8 +157,8 @@ export function StorySection() {
                   <div
                     className="story-image absolute inset-y-0 bg-cover"
                     style={{
-                      left: '-10%',
-                      right: '-10%',
+                      left: '-25%',
+                      right: '-25%',
                       backgroundImage: `url(${panel.imageSrc})`,
                       backgroundPosition: panel.imagePosition ?? 'center center',
                     }}

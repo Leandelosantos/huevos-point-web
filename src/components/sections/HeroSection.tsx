@@ -163,7 +163,7 @@ export function HeroSection() {
           Premium Egg Retail — Del campo a tu mesa
         </p>
         <MagneticButton onClick={scrollToStory} className="mt-2">
-          Descubr\u00ed m\u00e1s
+          Descubrí más
         </MagneticButton>
       </div>
 

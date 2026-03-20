@@ -30,16 +30,16 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <div className="flex min-h-screen items-center justify-center bg-bg-primary px-6">
             <div className="text-center">
               <h1 className="font-display text-3xl font-bold text-text-primary">
-                Algo sali\u00f3 mal
+                Algo salió mal
               </h1>
               <p className="mt-3 font-body text-text-secondary">
-                Ocurri\u00f3 un error inesperado. Por favor recarg\u00e1 la p\u00e1gina.
+                Ocurrió un error inesperado. Por favor recargá la página.
               </p>
               <button
                 onClick={() => window.location.reload()}
                 className="mt-6 min-h-[44px] rounded-lg bg-yolk px-6 py-3 font-body font-bold text-bg-primary"
               >
-                Recargar p\u00e1gina
+                Recargar página
               </button>
             </div>
           </div>

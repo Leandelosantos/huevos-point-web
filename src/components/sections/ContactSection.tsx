@@ -161,11 +161,11 @@ export function ContactSection() {
               Contacto
             </p>
             <h2 className="mt-3 font-heading text-section text-bg-primary">
-              Hac\u00e9 tu pedido
+              Hacé tu pedido
             </h2>
             <p className="mt-4 max-w-md font-body text-body text-bg-primary/70">
-              Complet\u00e1 el formulario y te contactamos para confirmar.
-              Tambi\u00e9n pod\u00e9s escribirnos directo por WhatsApp.
+              Completá el formulario y te contactamos para confirmar.
+              También podés escribirnos directo por WhatsApp.
             </p>
 
             <div className="mt-10 flex flex-col gap-4">
@@ -247,7 +247,7 @@ export function ContactSection() {
                 </svg>
                 <div className="confirmation-text mt-6" style={{ opacity: 0 }}>
                   <h3 className="font-heading text-2xl text-bg-primary">
-                    \u00a1Pedido enviado!
+                    ¡Pedido enviado!
                   </h3>
                   <p className="mt-2 font-body text-sm text-bg-primary/70">
                     Te contactaremos por WhatsApp para confirmar los detalles.
@@ -315,7 +315,7 @@ export function ContactSection() {
                       htmlFor="customer_phone"
                       className="mb-1.5 block font-body text-sm font-medium text-bg-primary"
                     >
-                      Tel\u00e9fono (WhatsApp) *
+                      Teléfono (WhatsApp) *
                     </label>
                     <input
                       id="customer_phone"
@@ -372,7 +372,7 @@ export function ContactSection() {
                       className={inputClasses}
                       {...register('delivery_zone')}
                     >
-                      <option value="">Seleccion\u00e1 tu zona</option>
+                      <option value="">Seleccioná tu zona</option>
                       {DELIVERY_ZONES.map((zone) => (
                         <option key={zone} value={zone}>
                           {zone}
@@ -418,7 +418,7 @@ export function ContactSection() {
                   {orderItems.length === 0 && (
                     <div className="form-field rounded-lg border border-yolk-deep/20 bg-yolk/5 p-4">
                       <p className="font-body text-sm text-yolk-deep">
-                        Agreg\u00e1 productos desde el cat\u00e1logo antes de enviar tu pedido.
+                        Agregá productos desde el catálogo antes de enviar tu pedido.
                       </p>
                     </div>
                   )}
@@ -427,7 +427,7 @@ export function ContactSection() {
                   {status === 'error' && (
                     <div className="form-field rounded-lg border border-error/20 bg-error/5 p-4" role="alert">
                       <p className="font-body text-sm text-error">
-                        Error al enviar el pedido. Por favor intent\u00e1 de nuevo.
+                        Error al enviar el pedido. Por favor intentá de nuevo.
                       </p>
                     </div>
                   )}

@@ -142,7 +142,7 @@ export function ProductCard({ product, variant, onAddToOrder }: ProductCardProps
       onClick={isMobile ? handleTap : undefined}
       role={isMobile ? 'button' : undefined}
       tabIndex={isMobile ? 0 : undefined}
-      aria-label={isMobile ? `${product.name} — toc\u00e1 para ver detalles` : undefined}
+      aria-label={isMobile ? `${product.name} — tocá para ver detalles` : undefined}
     >
       {/* Product image */}
       {product.image_url && (

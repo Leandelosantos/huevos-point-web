@@ -65,7 +65,7 @@ export function Navbar() {
       >
         <nav
           className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4"
-          aria-label="Navegaci\u00f3n principal"
+          aria-label="Navegación principal"
         >
           <a
             href="#hero"
@@ -94,7 +94,7 @@ export function Navbar() {
           <button
             onClick={() => setMenuOpen(!isMenuOpen)}
             className="flex min-h-[44px] min-w-[44px] items-center justify-center lg:hidden"
-            aria-label={isMenuOpen ? 'Cerrar men\u00fa' : 'Abrir men\u00fa'}
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? (
@@ -114,7 +114,7 @@ export function Navbar() {
         )}
         role="dialog"
         aria-modal="true"
-        aria-label="Men\u00fa de navegaci\u00f3n"
+        aria-label="Menú de navegación"
       >
         <nav>
           <ul className="flex flex-col items-center gap-10">
