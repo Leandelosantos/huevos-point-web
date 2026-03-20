@@ -140,7 +140,7 @@ export function StorySection() {
       </div>
 
       {/* Desktop / Tablet: horizontal track */}
-      <div className="hidden h-screen items-center md:flex">
+      <div className="hidden h-screen w-screen items-center overflow-x-hidden md:flex">
         <div
           ref={trackRef}
           className="story-track flex"
@@ -155,8 +155,10 @@ export function StorySection() {
                 {/* Image side */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-elevated">
                   <div
-                    className="story-image absolute inset-0 bg-cover"
+                    className="story-image absolute inset-y-0 bg-cover"
                     style={{
+                      left: '-10%',
+                      right: '-10%',
                       backgroundImage: `url(${panel.imageSrc})`,
                       backgroundPosition: panel.imagePosition ?? 'center center',
                     }}
