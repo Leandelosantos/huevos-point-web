@@ -1,7 +1,7 @@
-import { useRef } from 'react';
+import { lazy, Suspense, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
-import { gsap } from '@/lib/gsap-config';
+import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { AnimatedText } from '@/components/AnimatedText';
 import { MagneticButton } from '@/components/MagneticButton';
 import {
@@ -11,6 +11,9 @@ import {
   PARALLAX_HERO_SUBTITLE_SPEED,
 } from '@/constants/animation';
 
+// Lazy load del canvas Three.js — mantiene el bundle inicial pequeño
+const EggCanvas = lazy(() => import('@/components/EggCanvas'));
+
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -19,12 +22,52 @@ export function HeroSection() {
   const subtitleRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
+  // Ref compartida con EggScene — actualizada por ScrollTrigger sin causar re-renders
+  const progressRef = useRef<number>(0);
+
   useGSAP(
     () => {
       const section = sectionRef.current;
       if (!section) return;
 
-      // Parallax layers on scroll
+      // ─── PIN + animación del huevo (400vh de scroll) ───
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '+=400%',
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+        },
+      });
+
+      // Actualiza el progress para EggScene en cada frame de scroll
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: '+=400%',
+        onUpdate: (self) => {
+          progressRef.current = self.progress;
+        },
+      });
+
+      // Reveal del contenido cuando el huevo está ~60% abierto
+      // (tl position "3" = 60% del timeline de 5 unidades)
+      tl.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 50, filter: 'blur(12px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power2.out' },
+        3
+      );
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 30, filter: 'blur(8px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power2.out' },
+        3.4
+      );
+
+      // ─── Parallax multi-capa (se activa al salir del pin) ───
       const parallaxConfig = {
         scrollTrigger: {
           trigger: section,
@@ -34,7 +77,6 @@ export function HeroSection() {
         },
       };
 
-      // Layer 1: Background (0.3x speed)
       if (bgRef.current) {
         gsap.to(bgRef.current, {
           yPercent: PARALLAX_HERO_BG_SPEED * 100,
@@ -43,7 +85,6 @@ export function HeroSection() {
         });
       }
 
-      // Layer 3: Grain texture (0.5x speed)
       if (grainRef.current) {
         gsap.to(grainRef.current, {
           yPercent: PARALLAX_HERO_GRAIN_SPEED * 100,
@@ -52,7 +93,6 @@ export function HeroSection() {
         });
       }
 
-      // Layer 4: Title (0.7x speed + compress + fade)
       if (titleRef.current) {
         gsap.to(titleRef.current, {
           yPercent: PARALLAX_HERO_TITLE_SPEED * 100,
@@ -63,7 +103,6 @@ export function HeroSection() {
         });
       }
 
-      // Layer 5: Subtitle + CTA (0.9x speed)
       if (subtitleRef.current) {
         gsap.to(subtitleRef.current, {
           yPercent: PARALLAX_HERO_SUBTITLE_SPEED * 100,
@@ -73,7 +112,7 @@ export function HeroSection() {
         });
       }
 
-      // Scroll indicator pulse
+      // Scroll indicator: pulso + fade al scrollear
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current, {
           y: 8,
@@ -84,7 +123,6 @@ export function HeroSection() {
           yoyo: true,
         });
 
-        // Fade out indicator when scrolling starts
         gsap.to(scrollIndicatorRef.current, {
           opacity: 0,
           scrollTrigger: {
@@ -95,7 +133,6 @@ export function HeroSection() {
           },
         });
       }
-
     },
     [],
     sectionRef
@@ -119,7 +156,7 @@ export function HeroSection() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
       aria-label="Hero"
     >
-      {/* Layer 1: Background */}
+      {/* Layer 1: Background image */}
       <div
         ref={bgRef}
         className="absolute inset-0 z-0 bg-bg-primary"
@@ -147,18 +184,33 @@ export function HeroSection() {
         }}
       />
 
-      {/* Layer 4: Title */}
-      <div ref={titleRef} className="relative z-[3] text-center px-6">
+      {/* Layer 4: Egg 3D canvas — transparente, flota sobre el fondo */}
+      <Suspense fallback={null}>
+        <div className="absolute inset-0 z-[3]">
+          <EggCanvas progressRef={progressRef} />
+        </div>
+      </Suspense>
+
+      {/* Layer 5: Título — oculto al inicio, aparece desde el interior del huevo */}
+      <div
+        ref={titleRef}
+        className="relative z-[4] text-center px-6"
+        style={{ opacity: 0 }}
+      >
         <AnimatedText
           text="Huevos Point"
           as="h1"
           className="font-display text-hero font-black text-text-primary"
-          delay={3.2}
+          delay={0}
         />
       </div>
 
-      {/* Layer 5: Subtitle + CTA */}
-      <div ref={subtitleRef} className="absolute bottom-[20vh] z-[4] flex flex-col items-center gap-6 px-6 text-center md:bottom-[18vh]">
+      {/* Layer 6: Subtitle + CTA — oculto al inicio */}
+      <div
+        ref={subtitleRef}
+        className="absolute bottom-[20vh] z-[5] flex flex-col items-center gap-6 px-6 text-center md:bottom-[18vh]"
+        style={{ opacity: 0 }}
+      >
         <p className="font-heading text-xl text-text-secondary md:text-2xl">
           Premium Egg Retail — Del campo a tu mesa
         </p>
@@ -170,7 +222,7 @@ export function HeroSection() {
       {/* Scroll indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-8 z-[5] flex flex-col items-center gap-2"
+        className="absolute bottom-8 z-[6] flex flex-col items-center gap-2"
       >
         <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
           Scroll
