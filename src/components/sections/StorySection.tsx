@@ -30,7 +30,7 @@ const PANELS: StoryPanel[] = [
       'Un proceso de clasificaci\u00f3n riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.',
     imageSrc: '/images/hero/story-selection.webp',
     imageAlt: 'Huevos siendo clasificados por tama\u00f1o y calidad',
-    imagePosition: 'center 75%',
+    imagePosition: 'center center',
     stat: { value: '2.400+', label: 'huevos seleccionados por d\u00eda' },
   },
   {
