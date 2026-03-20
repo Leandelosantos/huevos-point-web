@@ -38,14 +38,11 @@ No crear archivos fuera de esa estructura sin confirmar primero.
 - Pausar video cuando sale del viewport
 
 ## Paleta de colores
-Usar exclusivamente las variables CSS definidas en `src/styles/globals.css`:
-- Fondo principal: `--color-bg-primary` (#fd904a) — naranja cálido
-- Fondo alterno: `--color-bg-secondary` (#fff2d9) — crema clara
-- Fondo elevado: `--color-bg-elevated` (#ffe8c0) — crema intensa (cards)
-- Acento: `--color-yolk` (#ffde59) — amarillo vibrante
-- Texto: `--color-text-primary` (#004aad) — azul profundo
-- Texto secundario: `--color-text-secondary` (#1a5bc2)
-Proporción 70-20-10: naranja+crema / amarillo / azul
+Usar exclusivamente las variables CSS definidas en el SRS sección 3.2:
+- Fondo: `--color-bg-primary` (#0C0A09), `--color-bg-secondary` (#1C1917)
+- Acento: `--color-yolk` (#F59E0B)
+- Texto: `--color-text-primary` (#FAFAF9), `--color-text-secondary` (#A8A29E)
+Proporción 70-20-10: fondos oscuros / neutros / acento yolk
 
 ## Tipografía
 - Display/Hero: Playfair Display (700, 900)
