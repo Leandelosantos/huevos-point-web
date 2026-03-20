@@ -144,13 +144,14 @@ export const MyComposition = () => {
 
 **Paleta de colores:**
 ```css
---color-bg-primary:   #0C0A09  /* Stone 950 — fondo principal */
---color-bg-secondary: #1C1917  /* Stone 900 — fondos alternos */
---color-yolk:         #F59E0B  /* Amber 500 — acento primario */
---color-yolk-light:   #FCD34D  /* Amber 300 — hover/highlights */
---color-text-primary: #FAFAF9  /* Stone 50 — texto principal */
---color-text-secondary: #A8A29E /* Stone 400 — texto secundario */
---color-cream:        #FFFBEB  /* Amber 50 — sección de contraste */
+--color-bg-primary:   #fd904a  /* Naranja cálido — fondo principal */
+--color-bg-secondary: #fff2d9  /* Crema clara — fondos alternos */
+--color-bg-elevated:  #ffe8c0  /* Crema intensa — cards/contenedores */
+--color-yolk:         #ffde59  /* Amarillo vibrante — acento primario */
+--color-yolk-light:   #ffe98a  /* Amarillo suave — hover/highlights */
+--color-text-primary: #004aad  /* Azul profundo — texto principal */
+--color-text-secondary: #1a5bc2 /* Azul medio — texto secundario */
+--color-cream:        #fff2d9  /* Crema — sección de contraste */
 ```
 
 **Tipografía:**
@@ -159,7 +160,7 @@ export const MyComposition = () => {
 - Body/Labels: **Satoshi** 400/500/700
 - Monoespaciado/Precios: **JetBrains Mono** 400
 
-**Estética:** Dark luxury editorial. Farm-to-table premium. Texturas grain/noise con opacidad 0.04.
+**Estética:** Warm & vibrant. Farm-to-table premium. Naranja + crema + amarillo + azul. Texturas grain/noise con opacidad 0.04.
 
 ### Composiciones sugeridas
 
