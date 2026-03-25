@@ -68,7 +68,8 @@ export function ContactSection() {
       gsap.from(fields, {
         scrollTrigger: {
           trigger: container,
-          start: 'top 70%',
+          start: 'top 90%',
+          once: true,
         },
         y: FORM_FIELD_REVEAL_Y,
         opacity: 0,
@@ -143,7 +144,7 @@ export function ContactSection() {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola! Quiero hacer un pedido')}`;
 
   const inputClasses =
-    'w-full rounded-lg border border-bg-primary/10 bg-white px-4 py-3 font-body text-sm text-bg-primary placeholder:text-bg-primary/40 focus:border-yolk focus:outline-none focus:ring-1 focus:ring-yolk';
+    'w-full rounded-lg border border-[rgba(12,10,9,0.12)] bg-white px-4 py-3 font-body text-sm text-bg-primary placeholder:text-[rgba(12,10,9,0.4)] focus:border-yolk focus:outline-none focus:ring-1 focus:ring-yolk';
   const errorClasses = 'mt-1 flex items-center gap-1 font-body text-xs text-error';
 
   return (
@@ -163,7 +164,7 @@ export function ContactSection() {
             <h2 className="mt-3 font-heading text-section text-bg-primary">
               Hacé tu pedido
             </h2>
-            <p className="mt-4 max-w-md font-body text-body text-bg-primary/70">
+            <p className="mt-4 max-w-md font-body text-body text-[rgba(12,10,9,0.7)]">
               Completá el formulario y te contactamos para confirmar.
               También podés escribirnos directo por WhatsApp.
             </p>
@@ -173,16 +174,16 @@ export function ContactSection() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[44px] items-center gap-3 rounded-xl border border-bg-primary/10 px-5 py-3 font-body text-sm text-bg-primary transition-colors hover:border-yolk-deep hover:text-yolk-deep"
+                className="inline-flex min-h-[44px] items-center gap-3 rounded-xl border border-[rgba(12,10,9,0.12)] px-5 py-3 font-body text-sm text-bg-primary transition-colors hover:border-yolk-deep hover:text-yolk-deep"
               >
                 <Phone className="h-4 w-4" />
                 WhatsApp directo
               </a>
-              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-bg-primary/60">
+              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-[rgba(12,10,9,0.6)]">
                 <Mail className="h-4 w-4" />
                 info@huevospoint.com.ar
               </div>
-              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-bg-primary/60">
+              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-[rgba(12,10,9,0.6)]">
                 <MapPin className="h-4 w-4" />
                 Buenos Aires, Argentina
               </div>
@@ -190,7 +191,7 @@ export function ContactSection() {
 
             {/* Order summary */}
             {orderItems.length > 0 && (
-              <div className="mt-10 rounded-xl border border-bg-primary/10 bg-white/60 p-5">
+              <div className="mt-10 rounded-xl border border-[rgba(12,10,9,0.12)] bg-white/60 p-5">
                 <h3 className="font-body text-sm font-bold text-bg-primary">
                   Tu pedido ({orderItems.length} {orderItems.length === 1 ? 'producto' : 'productos'})
                 </h3>
@@ -198,7 +199,7 @@ export function ContactSection() {
                   {orderItems.map((item) => (
                     <li
                       key={item.product_id}
-                      className="flex items-center justify-between font-body text-sm text-bg-primary/70"
+                      className="flex items-center justify-between font-body text-sm text-[rgba(12,10,9,0.7)]"
                     >
                       <span>
                         {item.product_name} x{item.quantity}
@@ -209,7 +210,7 @@ export function ContactSection() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-3 border-t border-bg-primary/10 pt-3 flex items-center justify-between">
+                <div className="mt-3 border-t border-[rgba(12,10,9,0.12)] pt-3 flex items-center justify-between">
                   <span className="font-body text-sm font-bold text-bg-primary">Total estimado</span>
                   <span className="font-mono text-sm font-bold text-yolk-deep">
                     {formatPrice(getOrderTotal())}
@@ -249,13 +250,13 @@ export function ContactSection() {
                   <h3 className="font-heading text-2xl text-bg-primary">
                     ¡Pedido enviado!
                   </h3>
-                  <p className="mt-2 font-body text-sm text-bg-primary/70">
+                  <p className="mt-2 font-body text-sm text-[rgba(12,10,9,0.7)]">
                     Te contactaremos por WhatsApp para confirmar los detalles.
                   </p>
                   <button
                     onClick={handleReset}
                     type="button"
-                    className="mt-6 min-h-[44px] rounded-lg border border-bg-primary/20 px-6 py-2 font-body text-sm text-bg-primary transition-colors hover:border-bg-primary"
+                    className="mt-6 min-h-[44px] rounded-lg border border-[rgba(12,10,9,0.2)] px-6 py-2 font-body text-sm text-bg-primary transition-colors hover:border-bg-primary"
                   >
                     Hacer otro pedido
                   </button>
@@ -408,7 +409,7 @@ export function ContactSection() {
                       ) : (
                         <span />
                       )}
-                      <span id="notes-counter" className="font-mono text-[10px] text-bg-primary/40">
+                      <span id="notes-counter" className="font-mono text-[10px] text-[rgba(12,10,9,0.4)]">
                         {notesValue?.length ?? 0}/500
                       </span>
                     </div>

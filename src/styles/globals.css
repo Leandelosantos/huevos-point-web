@@ -37,6 +37,12 @@
   body {
     @apply bg-bg-primary text-text-primary font-body antialiased;
     overflow-x: hidden;
+    cursor: url('/cursors/cursor.png') 32 32, auto;
+  }
+
+  a, button, [role="button"], label, select,
+  input[type="submit"], input[type="button"], input[type="reset"] {
+    cursor: url('/cursors/pointer.png') 16 0, pointer;
   }
 
   /* Skip to content link */

@@ -5,6 +5,10 @@ import {
   STORY_PIN_SCROLL_DISTANCE,
   STORY_IMAGE_PARALLAX_OFFSET,
 } from '@/constants/animation';
+import { HenIllustration } from '@/components/illustrations/HenIllustration';
+import { EggIllustration } from '@/components/illustrations/EggIllustration';
+import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
+import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
 
 interface StoryPanel {
   title: string;
@@ -149,9 +153,74 @@ export function StorySection() {
           {PANELS.map((panel, index) => (
             <div
               key={panel.title}
-              className="flex h-screen w-screen flex-shrink-0 items-center px-12 lg:px-24"
+              className="relative flex h-screen w-screen flex-shrink-0 items-center px-12 lg:px-24"
             >
-              <div className="grid w-full grid-cols-2 items-center gap-12">
+              {/* ── Ilustración: Gallina en panel Origen ── */}
+              {index === 0 && (
+                <FloatingIllustration
+                  className="pointer-events-none absolute bottom-[-60px] right-[8%] z-0 w-[260px] select-none opacity-90 lg:w-[310px]"
+                  floatY={16}
+                  duration={4}
+                >
+                  <HenIllustration />
+                </FloatingIllustration>
+              )}
+
+              {/* ── Huevos decorativos en panel Selección ── */}
+              {index === 1 && (
+                <>
+                  <FloatingIllustration
+                    className="pointer-events-none absolute right-[6%] top-[15%] z-0 w-[88px] select-none opacity-60"
+                    floatY={10}
+                    duration={3.2}
+                    rotateZ={3}
+                  >
+                    <EggIllustration rotate={-18} variant="outline" />
+                  </FloatingIllustration>
+                  <FloatingIllustration
+                    className="pointer-events-none absolute right-[14%] top-[25%] z-0 w-[56px] select-none opacity-40"
+                    floatY={8}
+                    duration={2.8}
+                    delay={0.6}
+                  >
+                    <EggIllustration rotate={12} variant="outline" />
+                  </FloatingIllustration>
+                  <SparkleDecoration
+                    className="pointer-events-none absolute right-[4%] top-[55%] w-[28px] select-none opacity-50"
+                    color="#F59E0B"
+                  />
+                  <SparkleDecoration
+                    className="pointer-events-none absolute right-[22%] top-[72%] w-[18px] select-none opacity-30"
+                    color="#F59E0B"
+                    variant="cross"
+                  />
+                </>
+              )}
+
+              {/* ── Sparkles decorativos en panel Tu Mesa ── */}
+              {index === 2 && (
+                <>
+                  <FloatingIllustration
+                    className="pointer-events-none absolute bottom-[12%] right-[5%] z-0 w-[110px] select-none opacity-55"
+                    floatY={12}
+                    duration={3.8}
+                    rotateZ={2}
+                  >
+                    <EggIllustration rotate={20} variant="cream" />
+                  </FloatingIllustration>
+                  <SparkleDecoration
+                    className="pointer-events-none absolute right-[18%] top-[18%] w-[22px] select-none opacity-60"
+                    color="#F59E0B"
+                  />
+                  <SparkleDecoration
+                    className="pointer-events-none absolute right-[8%] top-[35%] w-[14px] select-none opacity-40"
+                    color="#F0EAD6"
+                    variant="dot"
+                  />
+                </>
+              )}
+
+              <div className="relative z-10 grid w-full grid-cols-2 items-center gap-12">
                 {/* Image side */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-elevated">
                   <div
@@ -232,6 +301,12 @@ export function StorySection() {
                 </div>
               )}
             </div>
+            {/* Gallina ilustrada solo en panel Origen (mobile) */}
+            {index === 0 && (
+              <div className="mt-8 flex justify-end pr-4 opacity-85">
+                <HenIllustration className="w-[180px]" />
+              </div>
+            )}
           </div>
         ))}
       </div>

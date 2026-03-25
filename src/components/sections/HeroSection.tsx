@@ -1,74 +1,55 @@
-import { lazy, Suspense, useRef } from 'react';
+import { useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { AnimatedText } from '@/components/AnimatedText';
 import { MagneticButton } from '@/components/MagneticButton';
+import { HenIllustration } from '@/components/illustrations/HenIllustration';
+import { EggIllustration } from '@/components/illustrations/EggIllustration';
+import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
+import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
 import {
-  PARALLAX_HERO_BG_SPEED,
   PARALLAX_HERO_GRAIN_SPEED,
   PARALLAX_HERO_TITLE_SPEED,
   PARALLAX_HERO_SUBTITLE_SPEED,
 } from '@/constants/animation';
 
-// Lazy load del canvas Three.js — mantiene el bundle inicial pequeño
-const EggCanvas = lazy(() => import('@/components/EggCanvas'));
-
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
   const grainRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-
-  // Ref compartida con EggScene — actualizada por ScrollTrigger sin causar re-renders
-  const progressRef = useRef<number>(0);
+  const henRef = useRef<HTMLDivElement>(null);
+  const egg1Ref = useRef<HTMLDivElement>(null);
+  const egg2Ref = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const section = sectionRef.current;
       if (!section) return;
 
-      // ─── PIN + animación del huevo (400vh de scroll) ───
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=400%',
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-        },
+      // ─── Entrada: ilustraciones escalan + aparecen ───
+      gsap.from(henRef.current, {
+        scale: 0.88,
+        opacity: 0,
+        y: 50,
+        duration: 1.6,
+        ease: 'power3.out',
+        delay: 0.2,
       });
 
-      // Actualiza el progress para EggScene en cada frame de scroll
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: '+=400%',
-        onUpdate: (self) => {
-          progressRef.current = self.progress;
-        },
+      gsap.from([egg1Ref.current, egg2Ref.current], {
+        scale: 0.7,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.18,
+        ease: 'power2.out',
+        delay: 0.5,
       });
 
-      // Reveal del contenido cuando el huevo está ~60% abierto
-      // (tl position "3" = 60% del timeline de 5 unidades)
-      tl.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50, filter: 'blur(12px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power2.out' },
-        3
-      );
-      tl.fromTo(
-        subtitleRef.current,
-        { opacity: 0, y: 30, filter: 'blur(8px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.2, ease: 'power2.out' },
-        3.4
-      );
-
-      // ─── Parallax multi-capa (se activa al salir del pin) ───
-      const parallaxConfig = {
+      // ─── Parallax multi-capa al salir del hero ───
+      const parallaxBase = {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
@@ -77,29 +58,20 @@ export function HeroSection() {
         },
       };
 
-      if (bgRef.current) {
-        gsap.to(bgRef.current, {
-          yPercent: PARALLAX_HERO_BG_SPEED * 100,
-          ease: 'none',
-          ...parallaxConfig,
-        });
-      }
-
       if (grainRef.current) {
         gsap.to(grainRef.current, {
           yPercent: PARALLAX_HERO_GRAIN_SPEED * 100,
           ease: 'none',
-          ...parallaxConfig,
+          ...parallaxBase,
         });
       }
 
       if (titleRef.current) {
         gsap.to(titleRef.current, {
           yPercent: PARALLAX_HERO_TITLE_SPEED * 100,
-          scaleY: 0.8,
           opacity: 0,
           ease: 'none',
-          ...parallaxConfig,
+          ...parallaxBase,
         });
       }
 
@@ -108,11 +80,38 @@ export function HeroSection() {
           yPercent: PARALLAX_HERO_SUBTITLE_SPEED * 100,
           opacity: 0,
           ease: 'none',
-          ...parallaxConfig,
+          ...parallaxBase,
         });
       }
 
-      // Scroll indicator: pulso + fade al scrollear
+      // Gallina: parallax más lento (capa más "cercana")
+      if (henRef.current) {
+        gsap.to(henRef.current, {
+          yPercent: -12,
+          ease: 'none',
+          ...parallaxBase,
+        });
+      }
+
+      // Huevos: se alejan más rápido (capa "lejana")
+      if (egg1Ref.current) {
+        gsap.to(egg1Ref.current, {
+          yPercent: -45,
+          rotate: 18,
+          ease: 'none',
+          ...parallaxBase,
+        });
+      }
+      if (egg2Ref.current) {
+        gsap.to(egg2Ref.current, {
+          yPercent: -60,
+          rotate: -12,
+          ease: 'none',
+          ...parallaxBase,
+        });
+      }
+
+      // Scroll indicator: pulso infinito + fade al scrollear
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current, {
           y: 8,
@@ -133,6 +132,8 @@ export function HeroSection() {
           },
         });
       }
+
+      ScrollTrigger.refresh();
     },
     [],
     sectionRef
@@ -153,30 +154,25 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="relative flex h-screen overflow-hidden"
       aria-label="Hero"
     >
-      {/* Layer 1: Background image */}
+      {/* Fondo oscuro base */}
       <div
-        ref={bgRef}
-        className="absolute inset-0 z-0 bg-bg-primary"
-        style={{
-          backgroundImage: 'url(/images/hero/hero-bg.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        className="absolute inset-0 z-0"
+        style={{ background: 'var(--color-bg-primary)' }}
       />
 
-      {/* Layer 2: Gradient overlay (static) */}
+      {/* Gradient overlay — profundidad desde abajo */}
       <div
-        className="absolute inset-0 z-[1]"
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{ background: 'var(--color-gradient-hero)' }}
       />
 
-      {/* Layer 3: Grain texture */}
+      {/* Grain texture */}
       <div
         ref={grainRef}
-        className="absolute inset-0 z-[2] opacity-[var(--color-grain-opacity)]"
+        className="pointer-events-none absolute inset-0 z-[2] opacity-[var(--color-grain-opacity)]"
         style={{
           backgroundImage: 'url(/images/textures/grain.png)',
           backgroundRepeat: 'repeat',
@@ -184,45 +180,102 @@ export function HeroSection() {
         }}
       />
 
-      {/* Layer 4: Egg 3D canvas — transparente, flota sobre el fondo */}
-      <Suspense fallback={null}>
-        <div className="absolute inset-0 z-[3]">
-          <EggCanvas progressRef={progressRef} />
-        </div>
-      </Suspense>
-
-      {/* Layer 5: Título — oculto al inicio, aparece desde el interior del huevo */}
+      {/* ── Gallina — personaje principal, esquina derecha ── */}
       <div
-        ref={titleRef}
-        className="relative z-[4] text-center px-6"
-        style={{ opacity: 0 }}
+        ref={henRef}
+        className="pointer-events-none absolute bottom-0 right-[-20px] z-[3] w-[320px] select-none
+                   sm:w-[380px] md:right-[-10px] md:w-[430px] lg:right-0 lg:w-[520px]"
       >
-        <AnimatedText
-          text="Huevos Point"
-          as="h1"
-          className="font-display text-hero font-black text-text-primary"
-          delay={0}
-        />
+        <FloatingIllustration floatY={20} duration={4.2}>
+          <HenIllustration />
+        </FloatingIllustration>
       </div>
 
-      {/* Layer 6: Subtitle + CTA — oculto al inicio */}
+      {/* ── Huevos decorativos — capas de profundidad ── */}
+      <div
+        ref={egg1Ref}
+        className="pointer-events-none absolute left-[3%] top-[20%] z-[3] w-[120px] select-none opacity-35
+                   md:left-[5%] md:w-[150px]"
+      >
+        <EggIllustration rotate={-20} variant="outline" />
+      </div>
+      <div
+        ref={egg2Ref}
+        className="pointer-events-none absolute bottom-[22%] left-[6%] z-[3] w-[80px] select-none opacity-20
+                   md:bottom-[28%] md:left-[8%] md:w-[96px]"
+      >
+        <EggIllustration rotate={14} variant="outline" />
+      </div>
+
+      {/* ── Sparkles decorativos ── */}
+      <SparkleDecoration
+        className="pointer-events-none absolute right-[30%] top-[14%] z-[3] w-[26px] select-none opacity-55"
+        color="#F59E0B"
+      />
+      <SparkleDecoration
+        className="pointer-events-none absolute right-[20%] bottom-[30%] z-[3] w-[18px] select-none opacity-40"
+        color="#F59E0B"
+        variant="cross"
+      />
+      <SparkleDecoration
+        className="pointer-events-none absolute left-[22%] top-[42%] z-[3] w-[12px] select-none opacity-30"
+        color="#F0EAD6"
+        variant="dot"
+      />
+      <SparkleDecoration
+        className="pointer-events-none absolute left-[15%] top-[18%] z-[3] w-[16px] select-none opacity-25"
+        color="#F0EAD6"
+        variant="star4"
+      />
+
+      {/* ── Título vanguardista — dos líneas, tamaño extremo ── */}
+      <div
+        ref={titleRef}
+        className="absolute inset-0 z-[4] flex flex-col justify-center px-6 md:px-14 lg:px-20"
+      >
+        {/* Label */}
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-yolk md:text-xs">
+          Premium Egg Retail
+        </p>
+
+        {/* "Huevos" — relleno sólido */}
+        <div className="mt-1 overflow-hidden">
+          <AnimatedText
+            text="Huevos"
+            as="h1"
+            className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-text-primary text-[clamp(3.8rem,14vw,14rem)]"
+            delay={0.35}
+          />
+        </div>
+
+        {/* "Point" — outline: efecto tipográfico vanguardista */}
+        <div className="overflow-hidden pl-[0.12em]">
+          <AnimatedText
+            text="Point"
+            as="span"
+            className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-transparent text-[clamp(3.8rem,14vw,14rem)] [-webkit-text-stroke:2px_var(--color-text-primary)]"
+            delay={0.5}
+          />
+        </div>
+      </div>
+
+      {/* ── Subtitle + CTA ── */}
       <div
         ref={subtitleRef}
-        className="absolute bottom-[20vh] z-[5] flex flex-col items-center gap-6 px-6 text-center md:bottom-[18vh]"
-        style={{ opacity: 0 }}
+        className="absolute bottom-[18vh] z-[5] flex flex-col items-start gap-6 px-6 md:px-14 lg:px-20"
       >
-        <p className="font-heading text-xl text-text-secondary md:text-2xl">
-          Premium Egg Retail — Del campo a tu mesa
+        <p className="font-heading text-lg text-text-secondary md:text-xl">
+          Del campo a tu mesa
         </p>
-        <MagneticButton onClick={scrollToStory} className="mt-2">
+        <MagneticButton onClick={scrollToStory}>
           Descubrí más
         </MagneticButton>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll indicator ── */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-8 z-[6] flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 z-[6] flex -translate-x-1/2 flex-col items-center gap-2"
       >
         <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
           Scroll

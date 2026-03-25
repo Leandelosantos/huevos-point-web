@@ -7,6 +7,9 @@ import {
   PROCESS_STEP_FADE_IN_Y,
   PROCESS_STEP_FADE_OUT_Y,
 } from '@/constants/animation';
+import { EggIllustration } from '@/components/illustrations/EggIllustration';
+import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
+import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
 
 const STEP_ICONS = [Egg, Search, Package, Truck];
 
@@ -124,6 +127,34 @@ export function ProcessSection() {
       {/* Desktop / Tablet: pinned stepper */}
       <div className="hidden h-screen items-center justify-center md:flex">
         <div className="relative mx-auto h-56 w-full max-w-3xl px-6">
+
+          {/* ── Huevos decorativos flotantes (fondo, detrás del contenido) ── */}
+          <FloatingIllustration
+            className="pointer-events-none absolute -right-16 top-[-80px] w-[120px] select-none opacity-20"
+            floatY={14}
+            duration={4.2}
+            rotateZ={4}
+          >
+            <EggIllustration rotate={-30} variant="cream" />
+          </FloatingIllustration>
+          <FloatingIllustration
+            className="pointer-events-none absolute -left-20 bottom-[-60px] w-[90px] select-none opacity-15"
+            floatY={10}
+            duration={3.5}
+            delay={1}
+            rotateZ={-3}
+          >
+            <EggIllustration rotate={15} variant="outline" />
+          </FloatingIllustration>
+          <SparkleDecoration
+            className="pointer-events-none absolute right-0 top-[-40px] w-[20px] select-none opacity-40"
+            color="#F59E0B"
+          />
+          <SparkleDecoration
+            className="pointer-events-none absolute -left-8 top-[20px] w-[14px] select-none opacity-25"
+            color="#F0EAD6"
+            variant="cross"
+          />
           {/* Section label */}
           <p className="absolute -top-16 left-6 font-mono text-xs uppercase tracking-widest text-yolk lg:left-0">
             Proceso
