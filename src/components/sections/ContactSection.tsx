@@ -179,13 +179,17 @@ export function ContactSection() {
                 <Phone className="h-4 w-4" />
                 WhatsApp directo
               </a>
-              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-[rgba(12,10,9,0.6)]">
+              {/* <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-[rgba(12,10,9,0.6)]">
                 <Mail className="h-4 w-4" />
                 info@huevospoint.com.ar
-              </div>
-              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-sm text-[rgba(12,10,9,0.6)]">
+              </div> */}
+              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-lg text-[rgba(12,10,9,0.6)]">
                 <MapPin className="h-4 w-4" />
-                Buenos Aires, Argentina
+                Roosevelt 2606, Belgrano.
+              </div>
+              <div className="inline-flex items-center gap-3 px-5 py-3 font-body text-lg text-[rgba(12,10,9,0.6)]">
+                <MapPin className="h-4 w-4" />
+                Amenabar 1534, Belgrano.
               </div>
             </div>
 
@@ -298,6 +302,9 @@ export function ContactSection() {
                       type="text"
                       placeholder="Tu nombre"
                       className={inputClasses}
+                      autoComplete="name"
+                      autoCapitalize="words"
+                      inputMode="text"
                       aria-invalid={!!errors.customer_name}
                       aria-describedby={errors.customer_name ? 'name-error' : undefined}
                       {...register('customer_name')}
@@ -323,6 +330,8 @@ export function ContactSection() {
                       type="tel"
                       placeholder="+54 9 11 XXXX-XXXX"
                       className={inputClasses}
+                      autoComplete="tel"
+                      inputMode="tel"
                       aria-invalid={!!errors.customer_phone}
                       aria-describedby={errors.customer_phone ? 'phone-error' : undefined}
                       {...register('customer_phone')}
@@ -348,6 +357,9 @@ export function ContactSection() {
                       type="email"
                       placeholder="tu@email.com"
                       className={inputClasses}
+                      autoComplete="email"
+                      inputMode="email"
+                      autoCapitalize="none"
                       aria-invalid={!!errors.customer_email}
                       aria-describedby={errors.customer_email ? 'email-error' : undefined}
                       {...register('customer_email')}

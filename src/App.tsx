@@ -37,7 +37,7 @@ export default function App() {
       <Navbar />
       <main id="main-content">
         <HeroSection />
-        <Marquee text={MARQUEE_TEXT} className="py-8 bg-bg-secondary" />
+        <Marquee text={MARQUEE_TEXT} className="py-8 bg-brand-blue" />
         <Suspense fallback={<SectionFallback />}>
           <StorySection />
         </Suspense>

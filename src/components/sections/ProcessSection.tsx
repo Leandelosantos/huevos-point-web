@@ -156,7 +156,7 @@ export function ProcessSection() {
             variant="cross"
           />
           {/* Section label */}
-          <p className="absolute -top-16 left-6 font-mono text-xs uppercase tracking-widest text-yolk lg:left-0">
+          <p className="absolute -top-16 left-6 font-mono text-sm uppercase tracking-widest text-yolk lg:left-0">
             Proceso
           </p>
 
@@ -169,19 +169,19 @@ export function ProcessSection() {
                 style={index === 0 ? {} : { opacity: 0 }}
               >
                 {/* Step icon */}
-                <div className="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-2xl bg-bg-elevated">
-                  <Icon className="h-10 w-10 text-yolk" strokeWidth={1.5} />
+                <div className="flex h-32 w-32 flex-shrink-0 items-center justify-center rounded-2xl bg-bg-elevated">
+                  <Icon className="h-14 w-14 text-yolk" strokeWidth={1.5} />
                 </div>
 
                 {/* Step content */}
                 <div>
-                  <span className="step-counter font-mono text-5xl font-bold text-text-primary/10">
+                  <span className="step-counter font-mono text-8xl font-bold text-text-primary/10">
                     {step.number}
                   </span>
-                  <h3 className="mt-2 font-heading text-3xl text-text-primary lg:text-4xl">
+                  <h3 className="mt-2 font-heading text-5xl text-text-primary lg:text-6xl">
                     {step.title}
                   </h3>
-                  <p className="mt-3 max-w-md font-body text-body text-text-secondary">
+                  <p className="mt-3 max-w-xl font-body text-xl text-text-secondary">
                     {step.description}
                   </p>
                 </div>
@@ -194,7 +194,7 @@ export function ProcessSection() {
       {/* Mobile: vertical list */}
       <div className="flex flex-col gap-12 px-6 py-section md:hidden">
         <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-yolk">
+          <p className="font-mono text-sm uppercase tracking-widest text-yolk">
             Proceso
           </p>
           <h2 className="mt-3 font-heading text-section text-text-primary">
@@ -209,17 +209,17 @@ export function ProcessSection() {
               key={step.number}
               className="process-step-mobile flex items-start gap-6"
             >
-              <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl bg-bg-elevated">
-                <Icon className="h-7 w-7 text-yolk" strokeWidth={1.5} />
+              <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-bg-elevated">
+                <Icon className="h-9 w-9 text-yolk" strokeWidth={1.5} />
               </div>
               <div>
-                <span className="font-mono text-xs text-text-muted">
+                <span className="font-mono text-sm text-text-muted">
                   {step.number}
                 </span>
-                <h3 className="mt-1 font-heading text-xl text-text-primary">
+                <h3 className="mt-1 font-heading text-3xl text-text-primary">
                   {step.title}
                 </h3>
-                <p className="mt-2 font-body text-sm text-text-secondary">
+                <p className="mt-2 font-body text-base text-text-secondary">
                   {step.description}
                 </p>
               </div>

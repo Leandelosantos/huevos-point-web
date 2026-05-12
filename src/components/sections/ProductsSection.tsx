@@ -1,9 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
-import { useProducts } from '@/hooks/useProducts';
-import { useAppStore } from '@/stores/useAppStore';
-import { ProductCard } from '@/components/ProductCard';
+import { WHATSAPP_NUMBER } from '@/constants/business';
 import { OliveOilBottle } from '@/components/illustrations/OliveOilBottle';
 import { WineBottle } from '@/components/illustrations/WineBottle';
 import { HoneyJar } from '@/components/illustrations/HoneyJar';
@@ -11,72 +9,50 @@ import { NutsJar } from '@/components/illustrations/NutsJar';
 import { YerbaPackage } from '@/components/illustrations/YerbaPackage';
 import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
 import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
-import type { Product } from '@/types';
-import {
-  CARD_REVEAL_Y,
-  CARD_REVEAL_ROTATE_X,
-  STAGGER_CARD_REVEAL,
-  CARD_REVEAL_DURATION,
-  SCROLL_TRIGGER_START,
-} from '@/constants/animation';
+import { RadialScrollGallery } from '@/components/ui/RadialScrollGallery';
+import { Badge } from '@/components/ui/badge';
+import { ShoppingCart } from 'lucide-react';
+
+interface GalleryProduct {
+  id: string;
+  name: string;
+  category: string;
+  price: string;
+  imageSrc: string;
+}
+
+const GALLERY_PRODUCTS: GalleryProduct[] = [
+  { id: '1', name: 'Huevo N·3',    category: 'El mas chico',   price: '',  imageSrc: 'images/products/n3.png' },
+  { id: '2', name: 'Huevo N·2',   category: 'Pequeño y poderoso',   price: '',  imageSrc: '/images/products/avocado.png' },
+  { id: '3', name: 'Huevo N·1',     category: 'El hermano del medio', price: '',  imageSrc: '/images/products/mapleBlanco.png' },
+  { id: '4', name: 'Huevo Super',     category: 'El Huevo Estrella',   price: '',  imageSrc: '/images/products/super.png' },
+  { id: '5', name: 'Huevo Jumbo',          category: 'Doble Yema !',  price: '',  imageSrc: '/images/products/dobleYema.png' },
+  { id: '6', name: 'Huevo Color',     category: 'El distinto',    price: '',  imageSrc: '/images/products/color.png' },
+];
 
 export function ProductsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const wineRef    = useRef<HTMLDivElement>(null);
+  const oliveRef   = useRef<HTMLDivElement>(null);
+  const honeyRef   = useRef<HTMLDivElement>(null);
+  const nutsRef    = useRef<HTMLDivElement>(null);
+  const yerbaRef   = useRef<HTMLDivElement>(null);
 
-  const wineRef = useRef<HTMLDivElement>(null);
-  const oliveRef = useRef<HTMLDivElement>(null);
-  const honeyRef = useRef<HTMLDivElement>(null);
-  const nutsRef = useRef<HTMLDivElement>(null);
-  const yerbaRef = useRef<HTMLDivElement>(null);
-
-  const { products, isLoading } = useProducts();
-  const addToOrder = useAppStore((state) => state.addToOrder);
+  const whatsappUrl = (productName: string) =>
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola! Me interesa: ${productName}`)}`;
 
   useGSAP(
     () => {
       const section = sectionRef.current;
       if (!section) return;
 
-      // ── Cards del catálogo ──
-      const grid = gridRef.current;
-      if (grid && products.length) {
-        const cards = grid.querySelectorAll('.product-card');
-        if (cards.length) {
-          gsap.from(cards, {
-            scrollTrigger: {
-              trigger: grid,
-              start: SCROLL_TRIGGER_START,
-            },
-            y: CARD_REVEAL_Y,
-            opacity: 0,
-            rotateX: CARD_REVEAL_ROTATE_X,
-            stagger: { amount: STAGGER_CARD_REVEAL, from: 'start' },
-            duration: CARD_REVEAL_DURATION,
-            ease: 'power3.out',
-          });
-        }
-      }
-
-      // ── Reveal de ilustraciones: solo y / opacity / scale (sin x, para no conflictuar con el parallax) ──
-      const revealIllustration = (
-        el: HTMLDivElement | null,
-        triggerStart: string,
-        delay = 0
-      ) => {
+      const revealIllustration = (el: HTMLDivElement | null, triggerStart: string, delay = 0) => {
         if (!el) return;
         gsap.fromTo(
           el,
           { y: 40, opacity: 0, scale: 0.85 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1.1,
-            delay,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: triggerStart, once: true },
-          }
+          { y: 0, opacity: 1, scale: 1, duration: 1.1, delay, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: triggerStart, once: true } }
         );
       };
 
@@ -85,213 +61,137 @@ export function ProductsSection() {
       revealIllustration(honeyRef.current, 'top 92%', 0.1);
       revealIllustration(nutsRef.current,  'top 92%', 0.2);
 
-      // Yerba: trigger en la sección por estar posicionada con bottom
       const yerba = yerbaRef.current;
       if (yerba) {
-        gsap.fromTo(
-          yerba,
-          { y: 40, opacity: 0, scale: 0.85 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1.1,
-            delay: 0.05,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: section, start: '60% 100%', once: true },
-          }
-        );
+        gsap.fromTo(yerba, { y: 40, opacity: 0, scale: 0.85 },
+          { y: 0, opacity: 1, scale: 1, duration: 1.1, delay: 0.05, ease: 'power3.out',
+            scrollTrigger: { trigger: section, start: '60% 100%', once: true } });
       }
 
-      // ── Parallax horizontal con scroll — direcciones alternadas ──
       const scrollParallax = (el: HTMLDivElement | null, fromX: number, toX: number) => {
         if (!el) return;
-        gsap.fromTo(
-          el,
-          { x: fromX },
-          {
-            x: toX,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
-          }
-        );
+        gsap.fromTo(el, { x: fromX }, { x: toX, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.5 } });
       };
 
-      scrollParallax(wineRef.current,  -140,  140);  // →
-      scrollParallax(oliveRef.current,  120, -120);  // ←
-      scrollParallax(honeyRef.current, -100,  100);  // →
-      scrollParallax(nutsRef.current,   130, -130);  // ←
-      scrollParallax(yerbaRef.current, -120,  120);  // →
+      scrollParallax(wineRef.current,  -140,  140);
+      scrollParallax(oliveRef.current,  120, -120);
+      scrollParallax(honeyRef.current, -100,  100);
+      scrollParallax(nutsRef.current,   130, -130);
+      scrollParallax(yerbaRef.current, -120,  120);
     },
-    [products],
+    [],
     sectionRef
   );
-
-  const handleAddToOrder = (product: Product) => {
-    addToOrder(product);
-  };
-
-  const getColSpan = (index: number): string => {
-    const pairIndex = Math.floor(index / 2);
-    const isFirstInPair = index % 2 === 0;
-    const isEvenPair = pairIndex % 2 === 0;
-    if (isEvenPair) {
-      return isFirstInPair ? 'lg:col-span-7' : 'lg:col-span-5';
-    }
-    return isFirstInPair ? 'lg:col-span-5' : 'lg:col-span-7';
-  };
-
-  const getVariant = (product: Product): 'featured' | 'standard' => {
-    if (product.is_featured) return 'featured';
-    return 'standard';
-  };
 
   return (
     <section
       ref={sectionRef}
       id="products"
-      className="products-section relative bg-bg-primary py-[300px]"
+      className="products-section relative bg-bg-primary"
       aria-label="Nuestros productos"
     >
-      {/* ══════════════════════════════════════
-          ILUSTRACIONES — dispersas por toda la sección
-          ══════════════════════════════════════ */}
-
-      {/* Botella de vino — izquierda superior */}
-      <div
-        ref={wineRef}
-        className="pointer-events-none absolute left-[3%] top-[50px] z-0 hidden w-[100px] select-none
-                   lg:block lg:w-[120px] xl:w-[140px]"
-      >
-        <FloatingIllustration floatY={14} duration={4.8} rotateZ={1.5}>
-          <WineBottle />
-        </FloatingIllustration>
+      {/* ── Ilustraciones decorativas ── */}
+      <div ref={wineRef} className="pointer-events-none absolute left-[3%] top-[50px] z-0 hidden w-[100px] select-none lg:block lg:w-[120px] xl:w-[140px]">
+        <FloatingIllustration floatY={14} duration={4.8} rotateZ={1.5}><WineBottle /></FloatingIllustration>
+      </div>
+      <div ref={oliveRef} className="pointer-events-none absolute right-[4%] top-[90px] z-0 hidden w-[80px] select-none lg:block lg:w-[95px] xl:w-[110px]">
+        <FloatingIllustration floatY={18} duration={5.2} rotateZ={-2} delay={0.4}><OliveOilBottle /></FloatingIllustration>
+      </div>
+      <div ref={honeyRef} className="pointer-events-none absolute left-[52%] top-[40px] z-0 hidden w-[110px] select-none lg:block lg:w-[130px] xl:w-[150px]">
+        <FloatingIllustration floatY={12} duration={4.2} delay={0.6}><HoneyJar /></FloatingIllustration>
+      </div>
+      <div ref={nutsRef} className="pointer-events-none absolute left-[8%] top-[580px] z-0 hidden w-[90px] select-none lg:block lg:w-[106px] xl:w-[120px]">
+        <FloatingIllustration floatY={16} duration={4.6} rotateZ={2} delay={0.3}><NutsJar /></FloatingIllustration>
+      </div>
+      <div ref={yerbaRef} className="pointer-events-none absolute bottom-[60px] left-[28%] z-0 hidden w-[100px] select-none lg:block lg:w-[116px] xl:w-[132px]">
+        <FloatingIllustration floatY={13} duration={4.4} rotateZ={-1.5} delay={0.5}><YerbaPackage /></FloatingIllustration>
       </div>
 
-      {/* Botella de aceite — derecha superior */}
-      <div
-        ref={oliveRef}
-        className="pointer-events-none absolute right-[4%] top-[90px] z-0 hidden w-[80px] select-none
-                   lg:block lg:w-[95px] xl:w-[110px]"
-      >
-        <FloatingIllustration floatY={18} duration={5.2} rotateZ={-2} delay={0.4}>
-          <OliveOilBottle />
-        </FloatingIllustration>
+      <SparkleDecoration className="pointer-events-none absolute left-[48%] top-[22%] z-0 hidden w-[18px] select-none opacity-40 lg:block" color="#fd904a" />
+      <SparkleDecoration className="pointer-events-none absolute left-[20%] top-[15%] z-0 hidden w-[14px] select-none opacity-30 lg:block" color="#fd904a" variant="cross" />
+      <SparkleDecoration className="pointer-events-none absolute right-[22%] top-[55%] z-0 hidden w-[16px] select-none opacity-35 lg:block" color="#fff2d9" variant="dot" />
+      <SparkleDecoration className="pointer-events-none absolute left-[35%] top-[78%] z-0 hidden w-[18px] select-none opacity-25 lg:block" color="#fd904a" variant="star4" />
+
+      {/* ── Contenido principal ── */}
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24">
+        <p className="font-mono text-xs uppercase tracking-widest text-yolk">Catálogo</p>
+        <h2 className="mt-3 font-heading text-section text-text-primary">Nuestros Productos</h2>
+        <p className="mt-4 max-w-lg font-body text-body text-text-secondary">
+          Selección curada de huevos premium. Cada variedad elegida por su calidad
+          excepcional, origen trazable y sabor incomparable.
+        </p>
       </div>
 
-      {/* Frasco de miel — centro-derecha, zona alta */}
-      <div
-        ref={honeyRef}
-        className="pointer-events-none absolute left-[52%] top-[40px] z-0 hidden w-[110px] select-none
-                   lg:block lg:w-[130px] xl:w-[150px]"
+      {/* ── Galería radial ── */}
+      <RadialScrollGallery
+        baseRadius={600}
+        mobileRadius={320}
+        visiblePercentage={48}
+        scrollDuration={2200}
+        startTrigger="center center"
+        onItemSelect={(index) => {
+          const p = GALLERY_PRODUCTS[index];
+          if (p) window.open(whatsappUrl(p.name), '_blank', 'noopener,noreferrer');
+        }}
       >
-        <FloatingIllustration floatY={12} duration={4.2} delay={0.6}>
-          <HoneyJar />
-        </FloatingIllustration>
-      </div>
+        {(hoveredIndex) =>
+          GALLERY_PRODUCTS.map((product, index) => {
+            const isActive = hoveredIndex === index;
+            return (
+              <div
+                key={product.id}
+                className="relative h-[400px] w-[280px] overflow-hidden rounded-2xl sm:h-[460px] sm:w-[320px]"
+                style={{ backgroundColor: 'var(--color-bg-elevated)' }}
+              >
+                {/* Imagen — src vacío para que el usuario lo llene */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {product.imageSrc ? (
+                    <img
+                      src={product.imageSrc}
+                      alt={product.name}
+                      className={`h-full w-full object-cover transition-transform duration-700 ease-out ${
+                        isActive ? 'scale-110' : 'scale-100 grayscale-[20%]'
+                      }`}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: 'var(--color-bg-elevated)' }}>
+                      <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
+                        sin imagen
+                      </span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                </div>
 
-      {/* Frasco de frutos secos — izquierda, zona media-baja */}
-      <div
-        ref={nutsRef}
-        className="pointer-events-none absolute left-[8%] top-[580px] z-0 hidden w-[90px] select-none
-                   lg:block lg:w-[106px] xl:w-[120px]"
-      >
-        <FloatingIllustration floatY={16} duration={4.6} rotateZ={2} delay={0.3}>
-          <NutsJar />
-        </FloatingIllustration>
-      </div>
+                {/* Contenido de la card */}
+                <div className="absolute inset-0 flex flex-col justify-between p-4">
+                  <div className="flex items-start justify-between">
+                    <Badge variant="secondary" className="text-[14px] backdrop-blur-sm" style={{ backgroundColor: 'rgba(2,12,30,0.75)', color: 'var(--color-text-secondary)', border: '1px solid rgba(255,242,217,0.15)' }}>
+                      {product.category}
+                    </Badge>
+                    <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500 ${isActive ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-45'}`}
+                      style={{ backgroundColor: 'var(--color-yolk)', color: 'var(--color-bg-primary)' }}>
+                      <ShoppingCart size={11} />
+                    </div>
+                  </div>
 
-      {/* Paquete de yerba — fondo de sección, más centrado */}
-      <div
-        ref={yerbaRef}
-        className="pointer-events-none absolute bottom-[60px] left-[28%] z-0 hidden w-[100px] select-none
-                   lg:block lg:w-[116px] xl:w-[132px]"
-      >
-        <FloatingIllustration floatY={13} duration={4.4} rotateZ={-1.5} delay={0.5}>
-          <YerbaPackage />
-        </FloatingIllustration>
-      </div>
-
-      {/* Sparkles */}
-      <SparkleDecoration
-        className="pointer-events-none absolute left-[48%] top-[22%] z-0 hidden w-[18px] select-none opacity-40 lg:block"
-        color="#F59E0B"
-      />
-      <SparkleDecoration
-        className="pointer-events-none absolute left-[20%] top-[15%] z-0 hidden w-[14px] select-none opacity-30 lg:block"
-        color="#F59E0B"
-        variant="cross"
-      />
-      <SparkleDecoration
-        className="pointer-events-none absolute right-[22%] top-[55%] z-0 hidden w-[16px] select-none opacity-35 lg:block"
-        color="#F0EAD6"
-        variant="dot"
-      />
-      <SparkleDecoration
-        className="pointer-events-none absolute left-[35%] top-[78%] z-0 hidden w-[18px] select-none opacity-25 lg:block"
-        color="#F59E0B"
-        variant="star4"
-      />
-
-      {/* ══════════════════════════════════════
-          CONTENIDO PRINCIPAL
-          ══════════════════════════════════════ */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-
-        {/* Section header */}
-        <div className="mb-16">
-          <p className="font-mono text-xs uppercase tracking-widest text-yolk">
-            Catálogo
-          </p>
-          <h2 className="mt-3 font-heading text-section text-text-primary">
-            Nuestros Productos
-          </h2>
-          <p className="mt-4 max-w-lg font-body text-body text-text-secondary">
-            Selección curada de huevos premium. Cada variedad elegida por su calidad
-            excepcional, origen trazable y sabor incomparable.
-          </p>
-        </div>
-
-        {/* Loading */}
-        {isLoading && (
-          <div className="flex items-center justify-center py-20">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-yolk border-t-transparent" />
-          </div>
-        )}
-
-        {/* Grid de productos */}
-        {!isLoading && products.length > 0 && (
-          <div
-            ref={gridRef}
-            className="products-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-12"
-          >
-            {products.map((product, index) => (
-              <div key={product.id} className={`col-span-1 ${getColSpan(index)}`}>
-                <ProductCard
-                  product={product}
-                  variant={getVariant(product)}
-                  onAddToOrder={handleAddToOrder}
-                />
+                  <div className={`transition-transform duration-500 ${isActive ? 'translate-y-0' : 'translate-y-2'}`}>
+                    {product.price && (
+                      <p className="font-mono text-xs" style={{ color: 'var(--color-yolk)' }}>{product.price}</p>
+                    )}
+                    <h3 className="mt-1 font-display text-xl font-bold leading-tight" style={{ color: 'var(--color-text-primary)' }}>
+                      {product.name}
+                    </h3>
+                    <div className={`mt-2 h-0.5 transition-all duration-500 ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0'}`}
+                      style={{ backgroundColor: 'var(--color-yolk)' }} />
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* Empty */}
-        {/* {!isLoading && products.length === 0 && (
-          <div className="rounded-xl bg-bg-elevated p-8 text-center">
-            <p className="font-body text-text-secondary">
-              No hay productos disponibles en este momento.
-            </p>
-          </div>
-        )} */}
-
-      </div>
+            );
+          })
+        }
+      </RadialScrollGallery>
     </section>
   );
 }

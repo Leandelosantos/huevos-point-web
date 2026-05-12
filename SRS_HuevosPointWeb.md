@@ -724,10 +724,10 @@ tl.to('.check-circle', { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.
 
 ```html
 <!-- Esenciales -->
-<title>Huevos Point — Huevos Premium de Campo Libre | Entrega a Domicilio</title>
-<meta name="description" content="Huevos seleccionados de granjas sustentables. 
+<title>Huevos Point — Huevos Premium de Campo</title>
+<meta name="description" content="Huevos seleccionados de granja. 
   Campo libre, orgánicos y especiales. Pedí online con entrega en el día.">
-<link rel="canonical" href="https://huevospoint.com.ar">
+<link rel="canonical" href="https://huevospoint.com">
 
 <!-- Open Graph -->
 <meta property="og:title" content="Huevos Point — Premium Egg Retail">

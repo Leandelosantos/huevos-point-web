@@ -135,10 +135,10 @@ export function StorySection() {
     >
       {/* Section header */}
       <div className="px-6 pt-section md:hidden">
-        <p className="font-mono text-xs uppercase tracking-widest text-yolk">
+        <p className="font-mono text-sm uppercase tracking-widest text-yolk">
           Nuestra historia
         </p>
-        <h2 className="mt-3 font-heading text-section text-text-primary">
+        <h2 className="mt-3 font-heading text-section text-yolk">
           No es solo un huevo
         </h2>
       </div>
@@ -238,22 +238,22 @@ export function StorySection() {
 
                 {/* Text side */}
                 <div className="story-text">
-                  <p className="font-mono text-xs uppercase tracking-widest text-yolk">
+                  <p className="font-mono text-sm uppercase tracking-widest text-yolk">
                     {index === 0 && 'Nuestra historia'}
                     {index > 0 && `0${index + 1}`}
                   </p>
-                  <h2 className="mt-3 font-heading text-section text-text-primary">
+                  <h2 className="mt-3 font-heading text-section text-yolk">
                     {panel.title}
                   </h2>
-                  <p className="mt-4 max-w-md font-body text-body text-text-secondary">
+                  <p className="mt-4 max-w-lg font-body text-xl text-text-secondary">
                     {panel.description}
                   </p>
                   {panel.stat && (
                     <div className="mt-8">
-                      <span className="font-display text-4xl font-bold text-yolk">
+                      <span className="font-display text-6xl font-bold text-yolk">
                         {panel.stat.value}
                       </span>
-                      <p className="mt-1 font-mono text-xs text-text-muted">
+                      <p className="mt-1 font-mono text-sm text-text-muted">
                         {panel.stat.label}
                       </p>
                     </div>
@@ -281,21 +281,21 @@ export function StorySection() {
               />
             </div>
             <div className="mt-6">
-              <p className="font-mono text-xs uppercase tracking-widest text-yolk">
+              <p className="font-mono text-sm uppercase tracking-widest text-yolk">
                 0{index + 1}
               </p>
-              <h3 className="mt-2 font-heading text-2xl text-text-primary">
+              <h3 className="mt-2 font-heading text-4xl text-yolk">
                 {panel.title}
               </h3>
-              <p className="mt-3 font-body text-body text-text-secondary">
+              <p className="mt-3 font-body text-lg text-text-secondary">
                 {panel.description}
               </p>
               {panel.stat && (
                 <div className="mt-6">
-                  <span className="font-display text-3xl font-bold text-yolk">
+                  <span className="font-display text-5xl font-bold text-yolk">
                     {panel.stat.value}
                   </span>
-                  <p className="mt-1 font-mono text-xs text-text-muted">
+                  <p className="mt-1 font-mono text-sm text-text-muted">
                     {panel.stat.label}
                   </p>
                 </div>

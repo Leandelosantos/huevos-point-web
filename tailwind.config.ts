@@ -22,6 +22,7 @@ const config: Config = {
         },
         cream: 'var(--color-cream)',
         shell: 'var(--color-shell)',
+        'brand-blue': 'var(--color-brand-blue)',
         success: 'var(--color-success)',
         error: 'var(--color-error)',
       },

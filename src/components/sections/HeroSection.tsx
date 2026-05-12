@@ -4,7 +4,6 @@ import { useGSAP } from '@/hooks/useGSAP';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { AnimatedText } from '@/components/AnimatedText';
 import { MagneticButton } from '@/components/MagneticButton';
-import { HenIllustration } from '@/components/illustrations/HenIllustration';
 import { EggIllustration } from '@/components/illustrations/EggIllustration';
 import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
 import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
@@ -154,13 +153,13 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex h-screen overflow-hidden"
+      className="relative flex h-[100dvh] overflow-hidden"
       aria-label="Hero"
     >
       {/* Fondo oscuro base */}
       <div
         className="absolute inset-0 z-0"
-        style={{ background: 'var(--color-bg-primary)' }}
+        style={{ background: 'var(--color-brand-blue)' }}
       />
 
       {/* Gradient overlay — profundidad desde abajo */}
@@ -180,14 +179,24 @@ export function HeroSection() {
         }}
       />
 
-      {/* ── Gallina — personaje principal, esquina derecha ── */}
+      {/* ── Logo — elemento principal, esquina derecha ── */}
       <div
         ref={henRef}
-        className="pointer-events-none absolute bottom-0 right-[-20px] z-[3] w-[320px] select-none
-                   sm:w-[380px] md:right-[-10px] md:w-[430px] lg:right-0 lg:w-[520px]"
+        className="pointer-events-none absolute bottom-0 right-[-20px] z-[3] w-[280px] select-none
+                   sm:w-[340px] md:right-[-10px] md:w-[380px] lg:right-0 lg:w-[460px]"
       >
-        <FloatingIllustration floatY={20} duration={4.2}>
-          <HenIllustration />
+        <FloatingIllustration floatY={14} duration={4.2}>
+          <img
+            src="/images/logo.png"
+            alt="Huevos Point"
+            className="w-full"
+            style={{
+              mixBlendMode: 'screen',
+              filter:
+                'drop-shadow(0 0 60px rgba(245,158,11,0.55)) drop-shadow(0 16px 80px rgba(245,158,11,0.35)) drop-shadow(0 4px 20px rgba(245,158,11,0.7))',
+            }}
+            draggable={false}
+          />
         </FloatingIllustration>
       </div>
 
@@ -234,14 +243,14 @@ export function HeroSection() {
         className="absolute inset-0 z-[4] flex flex-col justify-center px-6 md:px-14 lg:px-20"
       >
         {/* Label */}
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-yolk md:text-xs">
-          Premium Egg Retail
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-yolk md:text-base">
+          Huevos de verdad
         </p>
 
         {/* "Huevos" — relleno sólido */}
         <div className="mt-1 overflow-hidden">
           <AnimatedText
-            text="Huevos"
+            text="De la granja"
             as="h1"
             className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-text-primary text-[clamp(3.8rem,14vw,14rem)]"
             delay={0.35}
@@ -251,7 +260,7 @@ export function HeroSection() {
         {/* "Point" — outline: efecto tipográfico vanguardista */}
         <div className="overflow-hidden pl-[0.12em]">
           <AnimatedText
-            text="Point"
+            text="a tu mesa"
             as="span"
             className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-transparent text-[clamp(3.8rem,14vw,14rem)] [-webkit-text-stroke:2px_var(--color-text-primary)]"
             delay={0.5}
@@ -262,11 +271,11 @@ export function HeroSection() {
       {/* ── Subtitle + CTA ── */}
       <div
         ref={subtitleRef}
-        className="absolute bottom-[18vh] z-[5] flex flex-col items-start gap-6 px-6 md:px-14 lg:px-20"
+        className="absolute bottom-[5vh] z-[5] flex flex-col items-start gap-6 px-6 md:px-14 lg:px-20"
       >
-        <p className="font-heading text-lg text-text-secondary md:text-xl">
+        {/* <p className="font-heading text-lg text-text-secondary md:text-xl">
           Del campo a tu mesa
-        </p>
+        </p> */}
         <MagneticButton onClick={scrollToStory}>
           Descubrí más
         </MagneticButton>
@@ -275,7 +284,7 @@ export function HeroSection() {
       {/* ── Scroll indicator ── */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-8 left-1/2 z-[6] flex -translate-x-1/2 flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 z-[6] hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
       >
         <span className="font-mono text-[10px] uppercase tracking-widest text-text-muted">
           Scroll

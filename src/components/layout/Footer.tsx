@@ -1,13 +1,25 @@
 import { Phone } from 'lucide-react';
-import { Marquee } from '@/components/Marquee';
-import { MARQUEE_TEXT, WHATSAPP_NUMBER } from '@/constants/business';
+import { PerspectiveMarquee } from '@/components/PerspectiveMarquee';
+import { WHATSAPP_NUMBER } from '@/constants/business';
 
 export function Footer() {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   return (
     <footer className="bg-bg-primary" role="contentinfo">
-      <Marquee text={MARQUEE_TEXT} className="border-t border-shell/10 py-6" />
+      <PerspectiveMarquee
+        items={['Huevos Point', 'De la granja a tu mesa', 'Huevos Premium', 'Calidad Superior']}
+        background="#020c1e"
+        fadeColor="#020c1e"
+        color="#fff2d9"
+        fontSize={48}
+        fontWeight={700}
+        pixelsPerFrame={1.5}
+        rotateY={-22}
+        rotateX={6}
+        perspective={1200}
+        height={100}
+      />
 
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
@@ -16,7 +28,7 @@ export function Footer() {
               Huevos Point
             </p>
             <p className="mt-1 font-body text-sm text-text-muted">
-              Premium Egg Retail
+              De la granja a tu mesa
             </p>
           </div>
 

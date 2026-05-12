@@ -4,30 +4,31 @@
 
 @layer base {
   :root {
-    /* === BASE === */
-    --color-bg-primary: #0C0A09;
-    --color-bg-secondary: #1C1917;
-    --color-bg-elevated: #292524;
+    /* === BASE — azul marino profundo derivado de #004aad === */
+    --color-bg-primary: #020c1e;
+    --color-bg-secondary: #041630;
+    --color-bg-elevated: #0a2252;
 
-    /* === BRAND ACCENT === */
-    --color-yolk: #F59E0B;
-    --color-yolk-light: #FCD34D;
-    --color-yolk-deep: #D97706;
+    /* === BRAND ACCENT — naranja Huevos Point === */
+    --color-yolk: #fd904a;
+    --color-yolk-light: #feb47e;
+    --color-yolk-deep: #e8731e;
 
-    /* === NEUTRAL TEXT === */
-    --color-text-primary: #FAFAF9;
-    --color-text-secondary: #A8A29E;
-    --color-text-muted: #78716C;
+    /* === NEUTRAL TEXT — cream de marca === */
+    --color-text-primary: #fff2d9;
+    --color-text-secondary: #c4b08a;
+    --color-text-muted: #7a6a54;
 
     /* === SEMANTIC === */
-    --color-cream: #FFFBEB;
-    --color-shell: #D6D3D1;
+    --color-cream: #fff2d9;
+    --color-shell: #1a3872;
+    --color-brand-blue: #004aad;
     --color-success: #22C55E;
     --color-error: #EF4444;
 
     /* === OVERLAY === */
     --color-grain-opacity: 0.04;
-    --color-gradient-hero: linear-gradient(180deg, transparent 0%, #0C0A09 100%);
+    --color-gradient-hero: linear-gradient(180deg, transparent 0%, #020c1e 100%);
   }
 
   html {
@@ -37,12 +38,15 @@
   body {
     @apply bg-bg-primary text-text-primary font-body antialiased;
     overflow-x: hidden;
+    overscroll-behavior-x: none;
     cursor: url('/cursors/cursor.png') 32 32, auto;
   }
 
   a, button, [role="button"], label, select,
   input[type="submit"], input[type="button"], input[type="reset"] {
     cursor: url('/cursors/pointer.png') 16 0, pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Skip to content link */
@@ -68,4 +72,44 @@
     background-color: var(--color-yolk);
     color: var(--color-bg-primary);
   }
+}
+
+/* ─── Alternancia de fondos por sección ─────────────────────────────────── */
+
+/* Story → cream #fff2d9 (claro) */
+#story {
+  --color-bg-secondary: #fff2d9;
+  --color-bg-elevated: rgba(0, 74, 173, 0.08);
+  --color-text-primary: #020c1e;
+  --color-text-secondary: #1a3872;
+  --color-text-muted: #004aad;
+  --color-yolk: #004aad;
+  --color-yolk-light: #1a5cb5;
+  --color-yolk-deep: #003285;
+  --color-shell: rgba(0, 74, 173, 0.15);
+}
+
+/* Products → dark (hereda :root, sin override) */
+
+/* Process → azul corporativo #004aad (medio) */
+#process {
+  --color-bg-secondary: #004aad;
+  --color-bg-elevated: rgba(255, 242, 217, 0.12);
+  --color-text-primary: #fff2d9;
+  --color-text-secondary: #c4b08a;
+  --color-text-muted: rgba(255, 242, 217, 0.55);
+  --color-yolk: #fd904a;
+  --color-yolk-light: #feb47e;
+  --color-yolk-deep: #e8731e;
+  --color-shell: rgba(255, 242, 217, 0.2);
+}
+
+/* Contact → cream (hereda de --color-cream que ya es #fff2d9) */
+#contact {
+  --color-bg-elevated: rgba(0, 74, 173, 0.06);
+  --color-text-primary: #020c1e;
+  --color-yolk: #004aad;
+  --color-yolk-light: #1a5cb5;
+  --color-yolk-deep: #003285;
+  --color-shell: rgba(0, 74, 173, 0.15);
 }
