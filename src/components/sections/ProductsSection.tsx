@@ -88,7 +88,7 @@ export function ProductsSection() {
     <section
       ref={sectionRef}
       id="products"
-      className="products-section relative bg-bg-primary"
+      className="products-section relative overflow-hidden bg-bg-primary"
       aria-label="Nuestros productos"
     >
       {/* ── Ilustraciones decorativas ── */}
@@ -129,7 +129,7 @@ export function ProductsSection() {
         mobileRadius={320}
         visiblePercentage={48}
         scrollDuration={2200}
-        startTrigger="center center"
+        startTrigger="top top"
         onItemSelect={(index) => {
           const p = GALLERY_PRODUCTS[index];
           if (p) window.open(whatsappUrl(p.name), '_blank', 'noopener,noreferrer');

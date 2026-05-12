@@ -119,8 +119,9 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
           gsap.to(containerRef.current, {
             rotation: 360, ease: 'none',
             scrollTrigger: {
-              trigger: pinRef.current, pin: true,
-              start: startTrigger, end: `+=${scrollDuration}`, scrub: 1, invalidateOnRefresh: true,
+              trigger: pinRef.current, pin: true, pinSpacing: true,
+              start: startTrigger, end: `+=${scrollDuration}`,
+              scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
             },
           });
         }
@@ -139,7 +140,7 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
     return (
       <div
         ref={mergedRef}
-        className={`relative flex min-h-[100dvh] w-full items-center justify-center overflow-hidden ${className}`}
+        className={`relative flex min-h-[100dvh] w-full items-center justify-center ${className}`}
         {...rest}
       >
         <div
