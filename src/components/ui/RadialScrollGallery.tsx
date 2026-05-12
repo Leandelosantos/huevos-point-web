@@ -1,7 +1,7 @@
-import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
+import { gsap, ScrollTrigger } from '@/lib/gsap-config';
+import { useGSAP } from '@/hooks/useGSAP';
 
 function useMergeRefs<T>(...refs: (Ref<T> | undefined)[]) {
   return useMemo(() => {
@@ -26,9 +26,15 @@ function useResponsiveValue(baseValue: number, mobileValue: number) {
       setValue(window.innerWidth < 768 ? mobileValue : baseValue);
     handleResize();
     let id: ReturnType<typeof setTimeout>;
-    const debounced = () => { clearTimeout(id); id = setTimeout(handleResize, 100); };
+    const debounced = () => {
+      clearTimeout(id);
+      id = setTimeout(handleResize, 100);
+    };
     window.addEventListener('resize', debounced);
-    return () => { window.removeEventListener('resize', debounced); clearTimeout(id); };
+    return () => {
+      window.removeEventListener('resize', debounced);
+      clearTimeout(id);
+    };
   }, [baseValue, mobileValue]);
   return value;
 }
@@ -76,8 +82,7 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
     const circleDiameter = currentRadius * 2;
 
     const { visibleDecimal, hiddenDecimal } = useMemo(() => {
-      const clamped = Math.max(10, Math.min(100, visiblePercentage));
-      const v = clamped / 100;
+      const v = Math.max(0.1, Math.min(1, visiblePercentage / 100));
       return { visibleDecimal: v, hiddenDecimal: 1 - v };
     }, [visiblePercentage]);
 
@@ -87,28 +92,33 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
     );
     const childrenCount = childrenNodes.length;
 
-    // Measure first card after mount
+    // Measure first card via ResizeObserver
     useEffect(() => {
       setIsMounted(true);
       if (!childRef.current) return;
       const observer = new ResizeObserver(() => {
         if (childRef.current) {
-          setChildSize({ w: childRef.current.offsetWidth, h: childRef.current.offsetHeight });
+          setChildSize({
+            w: childRef.current.offsetWidth,
+            h: childRef.current.offsetHeight,
+          });
         }
-        // Defer refresh so DOM has updated before ScrollTrigger recalculates
         requestAnimationFrame(() => ScrollTrigger.refresh());
       });
       observer.observe(childRef.current);
       return () => observer.disconnect();
     }, [childrenCount]);
 
+    // GSAP animations using project's hook (same instance + context as all other sections)
     useGSAP(
       () => {
         if (!outerRef.current || !containerRef.current || childrenCount === 0) return;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const triggerConfig = {
+        const wheel     = containerRef.current;
+        const cardInners = gsap.utils.toArray<HTMLElement>('.card-inner', wheel);
+
+        const triggerCfg = {
           trigger: outerRef.current,
           start: startTrigger,
           end: `+=${scrollDuration}`,
@@ -116,30 +126,32 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
           invalidateOnRefresh: true,
         };
 
-        // 1. Wheel rotates 360° driven by scroll
-        gsap.to(containerRef.current, {
+        // Wheel rotates 360°
+        gsap.to(wheel, {
           rotation: 360,
           ease: 'none',
-          scrollTrigger: triggerConfig,
+          scrollTrigger: triggerCfg,
         });
 
-        // 2. Each card counter-rotates -360° to stay upright
-        // Uses .card-inner wrapper so GSAP doesn't conflict with React's <li> positioning transform
-        const cardInners = containerRef.current.querySelectorAll('.card-inner');
+        // Each card counter-rotates –360° so it always faces the viewer
         if (cardInners.length) {
           gsap.to(cardInners, {
             rotation: -360,
             ease: 'none',
-            scrollTrigger: triggerConfig,
+            scrollTrigger: triggerCfg,
           });
         }
 
-        // 3. Initial reveal animation
+        // Initial entrance: cards scale in from 0
         gsap.fromTo(
-          containerRef.current.children,
+          wheel.children,
           { scale: 0, opacity: 0 },
           {
-            scale: 1, opacity: 1, duration: 1.2, ease: 'back.out(1.2)', stagger: 0.05,
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: 'back.out(1.2)',
+            stagger: 0.05,
             scrollTrigger: {
               trigger: outerRef.current,
               start: 'top 85%',
@@ -148,29 +160,30 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
           }
         );
       },
-      { scope: outerRef, dependencies: [scrollDuration, currentRadius, startTrigger, childrenCount] }
+      [scrollDuration, currentRadius, startTrigger, childrenCount],
+      outerRef
     );
 
     if (childrenCount === 0) return null;
 
-    const calculatedBuffer = childSize ? childSize.h * 0.25 + 80 : 150;
-    const visibleAreaHeight = childSize
-      ? circleDiameter * visibleDecimal + childSize.h / 2 + calculatedBuffer
+    const buffer         = childSize ? childSize.h * 0.25 + 80 : 150;
+    const visibleAreaH   = childSize
+      ? circleDiameter * visibleDecimal + childSize.h / 2 + buffer
       : circleDiameter * visibleDecimal + 200;
 
     return (
-      // Outer tall wrapper — scroll happens here, CSS sticky does the "pinning"
+      // Tall outer wrapper — CSS sticky does the viewport pinning, no GSAP pin
       <div
         ref={mergedRef}
         className={`relative w-full ${className}`}
-        style={{ minHeight: `${scrollDuration + visibleAreaHeight}px` }}
+        style={{ minHeight: `${scrollDuration + visibleAreaH}px` }}
         {...rest}
       >
-        {/* Sticky frame — stays in viewport while outer wrapper scrolls */}
+        {/* Sticky inner frame */}
         <div
           className="sticky top-0 w-full overflow-hidden"
           style={{
-            height: `${visibleAreaHeight}px`,
+            height: `${visibleAreaH}px`,
             maskImage: 'linear-gradient(to top, transparent 0%, black 35%, black 100%)',
             WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 35%, black 100%)',
           }}
@@ -179,15 +192,16 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
             ref={containerRef}
             dir={direction}
             className={[
-              'absolute left-1/2 m-0 list-none p-0 will-change-transform -translate-x-1/2',
+              'absolute left-1/2 m-0 list-none p-0 -translate-x-1/2',
               disabled ? 'pointer-events-none grayscale opacity-50' : '',
-              isMounted ? 'opacity-100' : 'opacity-0',
             ].join(' ')}
             style={{
               width: circleDiameter,
               height: circleDiameter,
               bottom: -(circleDiameter * hiddenDecimal),
+              opacity: isMounted ? 1 : 0,
               transition: 'opacity 0.5s ease',
+              willChange: 'transform',
             }}
           >
             {childrenNodes.map((child, index) => {
@@ -210,7 +224,7 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
                     zIndex: isHovered ? 100 : 10,
                   }}
                 >
-                  {/* card-inner: GSAP animates counter-rotation here, React doesn't touch it */}
+                  {/* GSAP controls rotation on this wrapper — React doesn't touch it */}
                   <div className="card-inner" style={{ willChange: 'transform' }}>
                     <div
                       role="button"
@@ -218,7 +232,10 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
                       onClick={() => !disabled && onItemSelect?.(index)}
                       onKeyDown={(e) => {
                         if (disabled) return;
-                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onItemSelect?.(index); }
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onItemSelect?.(index);
+                        }
                       }}
                       onMouseEnter={() => !disabled && setHoveredIndex(index)}
                       onMouseLeave={() => !disabled && setHoveredIndex(null)}
@@ -229,7 +246,9 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
                         'focus-visible:ring-2 focus-visible:ring-yolk focus-visible:ring-offset-2',
                         'transition-all duration-500 ease-out will-change-transform',
                         isHovered ? 'scale-125 -translate-y-8' : 'scale-100',
-                        isAnyHovered && !isHovered ? 'opacity-40 blur-[2px] grayscale' : 'opacity-100 blur-0',
+                        isAnyHovered && !isHovered
+                          ? 'opacity-40 blur-[2px] grayscale'
+                          : 'opacity-100 blur-0',
                       ].join(' ')}
                     >
                       {child}
