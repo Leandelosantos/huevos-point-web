@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
-import { gsap } from '@/lib/gsap-config';
+import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { WHATSAPP_NUMBER } from '@/constants/business';
 import { OliveOilBottle } from '@/components/illustrations/OliveOilBottle';
 import { WineBottle } from '@/components/illustrations/WineBottle';
@@ -79,6 +79,9 @@ export function ProductsSection() {
       scrollParallax(honeyRef.current, -100,  100);
       scrollParallax(nutsRef.current,   130, -130);
       scrollParallax(yerbaRef.current, -120,  120);
+
+      // Recalcula posiciones de todos los ScrollTriggers después de que StorySection haya agregado su spacer de pin
+      ScrollTrigger.refresh();
     },
     [],
     sectionRef
@@ -88,7 +91,7 @@ export function ProductsSection() {
     <section
       ref={sectionRef}
       id="products"
-      className="products-section relative overflow-hidden bg-bg-primary"
+      className="products-section relative bg-bg-primary"
       aria-label="Nuestros productos"
     >
       {/* ── Ilustraciones decorativas ── */}
