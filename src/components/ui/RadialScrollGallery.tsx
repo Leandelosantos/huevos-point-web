@@ -58,7 +58,7 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
       baseRadius = 550,
       mobileRadius = 220,
       className = '',
-      startTrigger = 'center center',
+      startTrigger = 'top top',
       onItemSelect,
       direction = 'ltr',
       disabled = false,
@@ -66,10 +66,10 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
     },
     ref
   ) => {
-    const pinRef       = useRef<HTMLDivElement>(null);
-    const containerRef = useRef<HTMLUListElement>(null);
-    const childRef     = useRef<HTMLLIElement>(null);
-    const mergedRef    = useMergeRefs(ref, pinRef);
+    const outerRef      = useRef<HTMLDivElement>(null);
+    const containerRef  = useRef<HTMLUListElement>(null);
+    const childRef      = useRef<HTMLLIElement>(null);
+    const mergedRef     = useMergeRefs(ref, outerRef);
 
     const [hoveredIndex, setHoveredIndex]   = useState<number | null>(null);
     const [childSize, setChildSize]         = useState<{ w: number; h: number } | null>(null);
@@ -93,9 +93,12 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
     useEffect(() => {
       setIsMounted(true);
       if (!childRef.current) return;
-      const observer = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          setChildSize({ w: entry.contentRect.width, h: entry.contentRect.height });
+      const observer = new ResizeObserver(() => {
+        if (childRef.current) {
+          setChildSize({
+            w: childRef.current.offsetWidth,
+            h: childRef.current.offsetHeight,
+          });
         }
         ScrollTrigger.refresh();
       });
@@ -103,48 +106,62 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
       return () => observer.disconnect();
     }, [childrenCount]);
 
+    // GSAP: solo rotación via scroll scrub — sin pin, sin spacer, sin conflictos
     useGSAP(
       () => {
-        if (!pinRef.current || !containerRef.current || childrenCount === 0) return;
+        if (!outerRef.current || !containerRef.current || childrenCount === 0) return;
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!prefersReducedMotion) {
-          gsap.fromTo(
-            containerRef.current.children,
-            { scale: 0, autoAlpha: 0 },
-            {
-              scale: 1, autoAlpha: 1, duration: 1.2, ease: 'back.out(1.2)', stagger: 0.05,
-              scrollTrigger: { trigger: pinRef.current, start: 'top 80%', toggleActions: 'play none none reverse' },
-            }
-          );
-          gsap.to(containerRef.current, {
-            rotation: 360, ease: 'none',
+        if (prefersReducedMotion) return;
+
+        // Aparición inicial
+        gsap.fromTo(
+          containerRef.current.children,
+          { scale: 0, autoAlpha: 0 },
+          {
+            scale: 1, autoAlpha: 1, duration: 1.2, ease: 'back.out(1.2)', stagger: 0.05,
             scrollTrigger: {
-              trigger: pinRef.current, pin: true, pinSpacing: true,
-              start: startTrigger, end: `+=${scrollDuration}`,
-              scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
+              trigger: outerRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
             },
-          });
-        }
+          }
+        );
+
+        // Rotación scroll-driven — CSS sticky hace el "pin", GSAP solo anima
+        gsap.to(containerRef.current, {
+          rotation: 360,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: outerRef.current,
+            start: startTrigger,
+            end: `+=${scrollDuration}`,
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
       },
-      { scope: pinRef, dependencies: [scrollDuration, currentRadius, startTrigger, childrenCount] }
+      { scope: outerRef, dependencies: [scrollDuration, currentRadius, startTrigger, childrenCount] }
     );
 
     if (childrenCount === 0) return null;
 
-    const scaleFactor      = 1.25;
-    const calculatedBuffer = childSize ? childSize.h * scaleFactor - childSize.h + 60 : 150;
+    const scaleFactor       = 1.25;
+    const calculatedBuffer  = childSize ? childSize.h * scaleFactor - childSize.h + 60 : 150;
     const visibleAreaHeight = childSize
       ? circleDiameter * visibleDecimal + childSize.h / 2 + calculatedBuffer
       : circleDiameter * visibleDecimal + 200;
 
     return (
+      // Outer wrapper alto — el scroll ocurre aquí
       <div
         ref={mergedRef}
-        className={`relative flex min-h-[100dvh] w-full items-center justify-center ${className}`}
+        className={`relative w-full ${className}`}
+        style={{ minHeight: `${scrollDuration + visibleAreaHeight}px` }}
         {...rest}
       >
+        {/* Inner sticky — se queda en viewport mientras el parent scrollea */}
         <div
-          className="relative w-full overflow-hidden"
+          className="sticky top-0 w-full overflow-hidden"
           style={{
             height: `${visibleAreaHeight}px`,
             maskImage: 'linear-gradient(to top, transparent 0%, black 40%, black 100%)',
@@ -159,7 +176,11 @@ export const RadialScrollGallery = forwardRef<HTMLDivElement, RadialScrollGaller
               disabled ? 'pointer-events-none grayscale opacity-50' : '',
               isMounted ? 'opacity-100' : 'opacity-0',
             ].join(' ')}
-            style={{ width: circleDiameter, height: circleDiameter, bottom: -(circleDiameter * hiddenDecimal) }}
+            style={{
+              width: circleDiameter,
+              height: circleDiameter,
+              bottom: -(circleDiameter * hiddenDecimal),
+            }}
           >
             {childrenNodes.map((child, index) => {
               const angle         = (index / childrenCount) * 2 * Math.PI;
