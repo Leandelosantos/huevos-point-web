@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import { WHATSAPP_NUMBER } from '@/constants/business';
 import { OliveOilBottle } from '@/components/illustrations/OliveOilBottle';
 import { WineBottle } from '@/components/illustrations/WineBottle';
@@ -31,6 +32,7 @@ const GALLERY_PRODUCTS: GalleryProduct[] = [
 ];
 
 export function ProductsSection() {
+  const isMobile   = useIsMobile();
   const sectionRef = useRef<HTMLElement>(null);
   const wineRef    = useRef<HTMLDivElement>(null);
   const oliveRef   = useRef<HTMLDivElement>(null);
@@ -126,75 +128,136 @@ export function ProductsSection() {
         </p>
       </div>
 
-      {/* ── Galería radial ── */}
-      <RadialScrollGallery
-        baseRadius={600}
-        mobileRadius={320}
-        visiblePercentage={48}
-        scrollDuration={2200}
-        startTrigger="top top"
-        onItemSelect={(index) => {
-          const p = GALLERY_PRODUCTS[index];
-          if (p) window.open(whatsappUrl(p.name), '_blank', 'noopener,noreferrer');
-        }}
-      >
-        {(hoveredIndex) =>
-          GALLERY_PRODUCTS.map((product, index) => {
-            const isActive = hoveredIndex === index;
-            return (
-              <div
+      {/* ── Mobile: scroll horizontal snap (sin animación GSAP pesada) ── */}
+      {isMobile && (
+        <div className="relative z-10 mt-10 pb-12">
+          <div
+            className="flex gap-4 overflow-x-auto px-6 pb-4"
+            style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+          >
+            {GALLERY_PRODUCTS.map((product) => (
+              <button
                 key={product.id}
-                className="relative h-[400px] w-[280px] overflow-hidden rounded-2xl sm:h-[460px] sm:w-[320px]"
-                style={{ backgroundColor: 'var(--color-bg-elevated)' }}
+                onClick={() => window.open(whatsappUrl(product.name), '_blank', 'noopener,noreferrer')}
+                className="flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl text-left"
+                style={{
+                  width: 240,
+                  height: 320,
+                  scrollSnapAlign: 'start',
+                  backgroundColor: 'var(--color-bg-elevated)',
+                  position: 'relative',
+                }}
+                aria-label={`Consultar ${product.name} por WhatsApp`}
               >
-                {/* Imagen — src vacío para que el usuario lo llene */}
-                <div className="absolute inset-0 overflow-hidden">
-                  {product.imageSrc ? (
-                    <img
-                      src={product.imageSrc}
-                      alt={product.name}
-                      className={`h-full w-full object-cover transition-transform duration-700 ease-out ${
-                        isActive ? 'scale-110' : 'scale-100 grayscale-[20%]'
-                      }`}
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: 'var(--color-bg-elevated)' }}>
-                      <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
-                        sin imagen
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                </div>
-
-                {/* Contenido de la card */}
-                <div className="absolute inset-0 flex flex-col justify-between p-4">
-                  <div className="flex items-start justify-between">
-                    <Badge variant="secondary" className="text-[14px] backdrop-blur-sm" style={{ backgroundColor: 'rgba(2,12,30,0.75)', color: 'var(--color-text-secondary)', border: '1px solid rgba(255,242,217,0.15)' }}>
-                      {product.category}
-                    </Badge>
-                    <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500 ${isActive ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-45'}`}
-                      style={{ backgroundColor: 'var(--color-yolk)', color: 'var(--color-bg-primary)' }}>
-                      <ShoppingCart size={11} />
-                    </div>
+                {product.imageSrc ? (
+                  <img
+                    src={product.imageSrc}
+                    alt={product.name}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
+                      sin imagen
+                    </span>
                   </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <Badge
+                    variant="secondary"
+                    className="mb-2 text-[11px]"
+                    style={{ backgroundColor: 'rgba(2,12,30,0.75)', color: 'var(--color-text-secondary)', border: '1px solid rgba(255,242,217,0.15)' }}
+                  >
+                    {product.category}
+                  </Badge>
+                  <h3 className="font-display text-lg font-bold leading-tight" style={{ color: 'var(--color-text-primary)' }}>
+                    {product.name}
+                  </h3>
+                  <div className="mt-3 flex items-center gap-2 rounded-full py-1.5 px-3 w-fit text-xs font-body font-bold"
+                    style={{ backgroundColor: 'var(--color-yolk)', color: 'var(--color-bg-primary)' }}>
+                    <ShoppingCart size={12} />
+                    Consultar
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+          {/* Scroll hint dots */}
+          <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
+            deslizá para ver más →
+          </p>
+        </div>
+      )}
 
-                  <div className={`transition-transform duration-500 ${isActive ? 'translate-y-0' : 'translate-y-2'}`}>
-                    {product.price && (
-                      <p className="font-mono text-xs" style={{ color: 'var(--color-yolk)' }}>{product.price}</p>
+      {/* ── Desktop: galería radial (hidden on mobile) ── */}
+      {!isMobile && (
+        <RadialScrollGallery
+          baseRadius={600}
+          mobileRadius={320}
+          visiblePercentage={48}
+          scrollDuration={2200}
+          startTrigger="top top"
+          onItemSelect={(index) => {
+            const p = GALLERY_PRODUCTS[index];
+            if (p) window.open(whatsappUrl(p.name), '_blank', 'noopener,noreferrer');
+          }}
+        >
+          {(hoveredIndex) =>
+            GALLERY_PRODUCTS.map((product, index) => {
+              const isActive = hoveredIndex === index;
+              return (
+                <div
+                  key={product.id}
+                  className="relative h-[400px] w-[280px] overflow-hidden rounded-2xl sm:h-[460px] sm:w-[320px]"
+                  style={{ backgroundColor: 'var(--color-bg-elevated)' }}
+                >
+                  <div className="absolute inset-0 overflow-hidden">
+                    {product.imageSrc ? (
+                      <img
+                        src={product.imageSrc}
+                        alt={product.name}
+                        className={`h-full w-full object-cover transition-transform duration-700 ease-out ${
+                          isActive ? 'scale-110' : 'scale-100 grayscale-[20%]'
+                        }`}
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: 'var(--color-bg-elevated)' }}>
+                        <span className="font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
+                          sin imagen
+                        </span>
+                      </div>
                     )}
-                    <h3 className="mt-1 font-display text-xl font-bold leading-tight" style={{ color: 'var(--color-text-primary)' }}>
-                      {product.name}
-                    </h3>
-                    <div className={`mt-2 h-0.5 transition-all duration-500 ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0'}`}
-                      style={{ backgroundColor: 'var(--color-yolk)' }} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  </div>
+                  <div className="absolute inset-0 flex flex-col justify-between p-4">
+                    <div className="flex items-start justify-between">
+                      <Badge variant="secondary" className="text-[14px] backdrop-blur-sm" style={{ backgroundColor: 'rgba(2,12,30,0.75)', color: 'var(--color-text-secondary)', border: '1px solid rgba(255,242,217,0.15)' }}>
+                        {product.category}
+                      </Badge>
+                      <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-500 ${isActive ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-45'}`}
+                        style={{ backgroundColor: 'var(--color-yolk)', color: 'var(--color-bg-primary)' }}>
+                        <ShoppingCart size={11} />
+                      </div>
+                    </div>
+                    <div className={`transition-transform duration-500 ${isActive ? 'translate-y-0' : 'translate-y-2'}`}>
+                      {product.price && (
+                        <p className="font-mono text-xs" style={{ color: 'var(--color-yolk)' }}>{product.price}</p>
+                      )}
+                      <h3 className="mt-1 font-display text-xl font-bold leading-tight" style={{ color: 'var(--color-text-primary)' }}>
+                        {product.name}
+                      </h3>
+                      <div className={`mt-2 h-0.5 transition-all duration-500 ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0'}`}
+                        style={{ backgroundColor: 'var(--color-yolk)' }} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
-        }
-      </RadialScrollGallery>
+              );
+            })
+          }
+        </RadialScrollGallery>
+      )}
     </section>
   );
 }

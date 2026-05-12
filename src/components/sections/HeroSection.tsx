@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import { ChevronDown } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
@@ -14,6 +15,7 @@ import {
 } from '@/constants/animation';
 
 export function HeroSection() {
+  const isMobile   = useIsMobile();
   const sectionRef = useRef<HTMLElement>(null);
   const grainRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
@@ -192,8 +194,9 @@ export function HeroSection() {
             className="w-full"
             style={{
               mixBlendMode: 'screen',
-              filter:
-                'drop-shadow(0 0 60px rgba(245,158,11,0.55)) drop-shadow(0 16px 80px rgba(245,158,11,0.35)) drop-shadow(0 4px 20px rgba(245,158,11,0.7))',
+              filter: isMobile
+                ? 'drop-shadow(0 4px 20px rgba(245,158,11,0.6))'
+                : 'drop-shadow(0 0 60px rgba(245,158,11,0.55)) drop-shadow(0 16px 80px rgba(245,158,11,0.35)) drop-shadow(0 4px 20px rgba(245,158,11,0.7))',
             }}
             draggable={false}
           />

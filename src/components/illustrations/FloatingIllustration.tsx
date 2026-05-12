@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 interface FloatingIllustrationProps {
   children: React.ReactNode;
@@ -19,15 +20,15 @@ export function FloatingIllustration({
   rotateZ = 0,
   delay = 0,
 }: FloatingIllustrationProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref     = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useGSAP(
     () => {
       if (!ref.current) return;
-
-      // Respeta prefers-reduced-motion
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return;
+      // Disable continuous floating on mobile (battery + performance — rule #12)
+      if (isMobile) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       gsap.to(ref.current, {
         y: floatY,
@@ -39,7 +40,7 @@ export function FloatingIllustration({
         yoyo: true,
       });
     },
-    [],
+    [isMobile],
     ref
   );
 
