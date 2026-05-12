@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Phone, Mail, MapPin, AlertCircle, Loader2 } from 'lucide-react';
+import { Phone, MapPin, AlertCircle, Loader2 } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
 import { useOrderSubmit } from '@/hooks/useOrderSubmit';

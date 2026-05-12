@@ -1,16 +1,8 @@
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import React, {
-  forwardRef,
-  HTMLAttributes,
-  ReactNode,
-  Ref,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
