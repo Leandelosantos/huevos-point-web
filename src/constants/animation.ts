@@ -36,6 +36,12 @@ export const PROCESS_STEP_FADE_IN_Y = 60;
 export const PROCESS_STEP_FADE_OUT_Y = -40;
 export const PROCESS_STEP_COUNT = 4;
 
+// ─── Branches ───
+export const BRANCHES_PIN_SCROLL_DISTANCE = 200; // BRANCHES.length * 100, misma fórmula que Story
+export const BRANCHES_TABLET_SCROLL_DISTANCE = 140;
+export const BRANCHES_IMAGE_HOVER_SCALE = 1.05;
+export const BRANCHES_IMAGE_HOVER_DURATION = 0.5;
+
 // ─── CTA / Contact ───
 export const CTA_BG_TRANSITION_START = 'top 80%';
 export const CTA_BG_TRANSITION_END = 'top 20%';

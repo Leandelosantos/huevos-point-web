@@ -1,14 +1,14 @@
-import { useRef } from 'react';
-import { useGSAP } from '@/hooks/useGSAP';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
+import { useRef } from "react";
+import { useGSAP } from "@/hooks/useGSAP";
+import { gsap, ScrollTrigger } from "@/lib/gsap-config";
 import {
   STORY_PIN_SCROLL_DISTANCE,
   STORY_IMAGE_PARALLAX_OFFSET,
-} from '@/constants/animation';
-import { HenIllustration } from '@/components/illustrations/HenIllustration';
-import { EggIllustration } from '@/components/illustrations/EggIllustration';
-import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
-import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
+} from "@/constants/animation";
+import { HenIllustration } from "@/components/illustrations/HenIllustration";
+import { EggIllustration } from "@/components/illustrations/EggIllustration";
+import { SparkleDecoration } from "@/components/illustrations/SparkleDecoration";
+import { FloatingIllustration } from "@/components/illustrations/FloatingIllustration";
 
 interface StoryPanel {
   title: string;
@@ -21,29 +21,29 @@ interface StoryPanel {
 
 const PANELS: StoryPanel[] = [
   {
-    title: 'Origen',
+    title: "Origen",
     description:
-      'Cada huevo comienza en granjas sustentables donde las gallinas viven en libertad, con espacio para moverse, alimentarse naturalmente y producir huevos de calidad excepcional.',
-    imageSrc: '/images/hero/story-origin.webp',
-    imageAlt: 'Granja sustentable con gallinas en libertad',
-    imagePosition: 'center center',
+      "Cada huevo comienza en granjas sustentables donde las gallinas viven en libertad, con espacio para moverse, alimentarse naturalmente y producir huevos de calidad excepcional.",
+    imageSrc: "/images/hero/story-origin.webp",
+    imageAlt: "Granja sustentable con gallinas en libertad",
+    imagePosition: "center center",
   },
   {
-    title: 'Selección',
+    title: "Selección",
     description:
-      'Un proceso de clasificación riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.',
-    imageSrc: '/images/hero/story-selection.webp',
-    imageAlt: 'Huevos siendo clasificados por tamaño y calidad',
-    imagePosition: 'center center',
-    stat: { value: '2.400+', label: 'huevos seleccionados por día' },
+      "Un proceso de clasificación riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.",
+    imageSrc: "/images/hero/story-selection.webp",
+    imageAlt: "Huevos siendo clasificados por tamaño y calidad",
+    imagePosition: "center center",
+    stat: { value: "2.400+", label: "huevos seleccionados por día" },
   },
   {
-    title: 'Tu mesa',
+    title: "Tu mesa",
     description:
-      'Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de dónde viene tu alimento.',
-    imageSrc: '/images/hero/story-table.webp',
-    imageAlt: 'Plato gourmet preparado con huevos frescos',
-    imagePosition: 'center center',
+      "Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de dónde viene tu alimento.",
+    imageSrc: "/images/hero/story-table.webp",
+    imageAlt: "Plato gourmet preparado con huevos frescos",
+    imagePosition: "center center",
   },
 ];
 
@@ -59,63 +59,67 @@ export function StorySection() {
 
       ScrollTrigger.matchMedia({
         // Desktop: full horizontal pin
-        '(min-width: 1024px)': () => {
+        "(min-width: 1024px)": () => {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               pin: true,
-              start: 'top top',
+              start: "top top",
               end: `+=${STORY_PIN_SCROLL_DISTANCE}%`,
               scrub: 1,
             },
           });
 
           // Move track horizontally to reveal all 3 panels
-          tl.to(track, { xPercent: -66.6, ease: 'none' });
+          tl.to(track, { xPercent: -66.6, ease: "none" });
 
           // Parallax: images move slower than text
-          const images = track.querySelectorAll('.story-image');
-          tl.to(images, { xPercent: STORY_IMAGE_PARALLAX_OFFSET, ease: 'none' }, 0);
+          const images = track.querySelectorAll(".story-image");
+          tl.to(
+            images,
+            { xPercent: STORY_IMAGE_PARALLAX_OFFSET, ease: "none" },
+            0,
+          );
 
           // Text reveal for each panel
-          const texts = track.querySelectorAll('.story-text');
+          const texts = track.querySelectorAll(".story-text");
           texts.forEach((text, i) => {
             tl.fromTo(
               text,
               { y: 40, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' },
-              i * 0.33
+              { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
+              i * 0.33,
             );
           });
         },
 
         // Tablet: partial pin with 2 visible panels
-        '(min-width: 768px) and (max-width: 1023px)': () => {
+        "(min-width: 768px) and (max-width: 1023px)": () => {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               pin: true,
-              start: 'top top',
-              end: '+=200%',
+              start: "top top",
+              end: "+=200%",
               scrub: 1,
             },
           });
 
-          tl.to(track, { xPercent: -66.6, ease: 'none' });
+          tl.to(track, { xPercent: -66.6, ease: "none" });
         },
 
         // Mobile: vertical scroll, no pin
-        '(max-width: 767px)': () => {
-          const panels = section.querySelectorAll('.story-panel-mobile');
+        "(max-width: 767px)": () => {
+          const panels = section.querySelectorAll(".story-panel-mobile");
           panels.forEach((panel) => {
             gsap.from(panel, {
               y: 40,
               opacity: 0,
               duration: 0.8,
-              ease: 'power2.out',
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: panel,
-                start: 'top 80%',
+                start: "top 80%",
               },
             });
           });
@@ -123,7 +127,7 @@ export function StorySection() {
       });
     },
     [],
-    sectionRef
+    sectionRef,
   );
 
   return (
@@ -139,7 +143,7 @@ export function StorySection() {
           Nuestra historia
         </p>
         <h2 className="mt-3 font-heading text-section text-yolk">
-          No es solo un huevo
+          NO ES SOLO UN HUEVO
         </h2>
       </div>
 
@@ -153,8 +157,23 @@ export function StorySection() {
           {PANELS.map((panel, index) => (
             <div
               key={panel.title}
-              className="relative flex h-screen w-screen flex-shrink-0 items-center px-12 lg:px-24"
+              className="relative flex h-screen w-screen flex-shrink-0 items-center px-12 lg:px-24 pt-20"
             >
+              {/* ── Título de sección — solo en primer panel, posición absoluta ── */}
+              {index === 0 && (
+                <div className="pointer-events-none absolute inset-x-0 top-6 z-20 text-center pb-[8rem]">
+                  <p className="font-mono text-lg uppercase tracking-widest text-yolk mt-6">
+                    Nuestra historia
+                  </p>
+                  <h2
+                    className="mb-2 font-heading font-bold leading-tight text-yolk tracking-[0.4rem]"
+                    style={{ fontSize: "clamp(2.5rem, 10.5vw, 6rem)" }}
+                  >
+                    NO ES SOLO UN HUEVO
+                  </h2>
+                </div>
+              )}
+
               {/* ── Ilustración: Gallina en panel Origen ── */}
               {index === 0 && (
                 <FloatingIllustration
@@ -220,16 +239,17 @@ export function StorySection() {
                 </>
               )}
 
-              <div className="relative z-10 grid w-full grid-cols-2 items-center gap-12">
+              <div className="relative z-10 grid w-full grid-cols-2 items-center gap-12 mt-[4rem]">
                 {/* Image side */}
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-elevated">
                   <div
                     className="story-image absolute inset-y-0 bg-cover"
                     style={{
-                      left: '-25%',
-                      right: '-25%',
+                      left: "-25%",
+                      right: "-25%",
                       backgroundImage: `url(${panel.imageSrc})`,
-                      backgroundPosition: panel.imagePosition ?? 'center center',
+                      backgroundPosition:
+                        panel.imagePosition ?? "center center",
                     }}
                     role="img"
                     aria-label={panel.imageAlt}
@@ -238,14 +258,13 @@ export function StorySection() {
 
                 {/* Text side */}
                 <div className="story-text">
-                  <p className="font-mono text-sm uppercase tracking-widest text-yolk">
-                    {index === 0 && 'Nuestra historia'}
-                    {index > 0 && `0${index + 1}`}
+                  <p className="font-mono text-lg uppercase tracking-widest text-yolk">
+                    {index === 0 ? "01" : `0${index + 1}`}
                   </p>
-                  <h2 className="mt-3 font-heading text-section text-yolk">
+                  <h2 className="mt-3 font-heading text-8xl text-yolk">
                     {panel.title}
                   </h2>
-                  <p className="mt-4 max-w-lg font-body text-xl text-text-secondary">
+                  <p className="mt-4 max-w-lg font-body text-3xl text-text-secondary">
                     {panel.description}
                   </p>
                   {panel.stat && (
@@ -274,7 +293,7 @@ export function StorySection() {
                 className="absolute inset-0 bg-cover"
                 style={{
                   backgroundImage: `url(${panel.imageSrc})`,
-                  backgroundPosition: panel.imagePosition ?? 'center center',
+                  backgroundPosition: panel.imagePosition ?? "center center",
                 }}
                 role="img"
                 aria-label={panel.imageAlt}

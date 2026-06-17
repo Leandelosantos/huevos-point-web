@@ -1,0 +1,353 @@
+- generic [active] [ref=e1]:
+  - link "Ir al contenido principal" [ref=e2]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e12]:
+      - generic [ref=e13]:
+        - link "Huevos Point — inicio" [ref=e14]:
+          - /url: "#hero"
+          - img "Huevos Point" [ref=e15]
+        - button "Abrir menú" [ref=e16] [cursor=pointer]:
+          - generic [ref=e17]:
+            - paragraph [ref=e18]: Menú
+            - paragraph [ref=e19]: Cerrar
+          - img [ref=e20]
+    - main [ref=e27]:
+      - region "Hero" [ref=e28]:
+        - generic:
+          - img
+        - generic:
+          - img
+        - img
+        - img
+        - img
+        - img
+        - generic [ref=e30]:
+          - paragraph [ref=e31]: De la granja a tu mesa
+          - generic [ref=e32]:
+            - heading "HUEVOS" [level=1] [ref=e35]:
+              - generic [ref=e36]:
+                - generic [ref=e37]: H
+                - generic [ref=e38]: U
+                - generic [ref=e39]: E
+                - generic [ref=e40]: V
+                - generic [ref=e41]: O
+                - generic [ref=e42]: S
+            - generic "POINT" [ref=e45]:
+              - generic [ref=e46]:
+                - generic [ref=e47]: P
+                - generic [ref=e48]: O
+                - generic [ref=e49]: I
+                - generic [ref=e50]: "N"
+                - generic [ref=e51]: T
+          - paragraph [ref=e52]: Huevos de verdad
+          - button "ROMPER" [ref=e53]:
+            - generic [ref=e55]: ROMPER
+        - generic [ref=e56]:
+          - generic [ref=e57]: Scroll
+          - img [ref=e58]
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]: HUEVOS POINT
+            - img [ref=e65]
+          - generic [ref=e68]:
+            - generic [ref=e69]: FRESCURA
+            - img [ref=e70]
+          - generic [ref=e73]:
+            - generic [ref=e74]: DE LA GRANJA
+            - img [ref=e75]
+          - generic [ref=e78]:
+            - generic [ref=e79]: PREMIUM
+            - img [ref=e80]
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - generic [ref=e85]: HUEVOS POINT
+            - img [ref=e86]
+          - generic [ref=e89]:
+            - generic [ref=e90]: FRESCURA
+            - img [ref=e91]
+          - generic [ref=e94]:
+            - generic [ref=e95]: DE LA GRANJA
+            - img [ref=e96]
+          - generic [ref=e99]:
+            - generic [ref=e100]: PREMIUM
+            - img [ref=e101]
+      - region "Nuestra historia" [ref=e148]:
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic:
+              - paragraph: Nuestra historia
+              - heading "NO ES SOLO UN HUEVO" [level=2]
+            - generic:
+              - img
+            - generic [ref=e152]:
+              - img "Granja sustentable con gallinas en libertad" [ref=e154]
+              - generic [ref=e155]:
+                - paragraph [ref=e156]: "01"
+                - heading "Origen" [level=2] [ref=e157]
+                - paragraph [ref=e158]: Cada huevo comienza en granjas sustentables donde las gallinas viven en libertad, con espacio para moverse, alimentarse naturalmente y producir huevos de calidad excepcional.
+          - generic [ref=e159]:
+            - generic:
+              - img
+            - generic:
+              - img
+            - img
+            - img
+            - generic [ref=e160]:
+              - img "Huevos siendo clasificados por tamaño y calidad" [ref=e162]
+              - generic [ref=e163]:
+                - paragraph [ref=e164]: "02"
+                - heading "Selección" [level=2] [ref=e165]
+                - paragraph [ref=e166]: Un proceso de clasificación riguroso donde cada huevo es inspeccionado a mano. Solo los mejores pasan el control de calidad.
+                - generic [ref=e167]:
+                  - text: 2.400+
+                  - paragraph [ref=e168]: huevos seleccionados por día
+          - generic [ref=e169]:
+            - generic:
+              - img
+            - img
+            - img
+            - generic [ref=e170]:
+              - img "Plato gourmet preparado con huevos frescos" [ref=e172]
+              - generic [ref=e173]:
+                - paragraph [ref=e174]: "03"
+                - heading "Tu mesa" [level=2] [ref=e175]
+                - paragraph [ref=e176]: Del campo a tu cocina en menos de 24 horas. Frescura, sabor y la tranquilidad de saber exactamente de dónde viene tu alimento.
+      - region "Nuestros productos" [ref=e177]:
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - img
+        - img
+        - img
+        - img
+        - img
+        - generic [ref=e178]:
+          - paragraph [ref=e179]: Catálogo de Huevos
+          - heading "NUESTROS PRODUCTOS" [level=2] [ref=e180]
+          - paragraph [ref=e181]: Selección curada de huevos premium. Cada variedad elegida por su calidad excepcional, origen trazable y sabor incomparable.
+        - list [ref=e184]:
+          - listitem [ref=e310]:
+            - button "Huevo N·3 El mas chico Huevo N·3" [ref=e312] [cursor=pointer]:
+              - generic [ref=e313]:
+                - img "Huevo N·3" [ref=e315]
+                - generic [ref=e317]:
+                  - generic [ref=e318]:
+                    - generic [ref=e319]: El mas chico
+                    - img [ref=e321]
+                  - heading "Huevo N·3" [level=3] [ref=e326]
+          - listitem [ref=e327]:
+            - button "Huevo N·2 Pequeño y poderoso Huevo N·2" [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]:
+                - img "Huevo N·2" [ref=e332]
+                - generic [ref=e334]:
+                  - generic [ref=e335]:
+                    - generic [ref=e336]: Pequeño y poderoso
+                    - img [ref=e338]
+                  - heading "Huevo N·2" [level=3] [ref=e343]
+          - listitem [ref=e344]:
+            - button "Huevo N·1 El hermano del medio Huevo N·1" [ref=e346] [cursor=pointer]:
+              - generic [ref=e347]:
+                - img "Huevo N·1" [ref=e349]
+                - generic [ref=e351]:
+                  - generic [ref=e352]:
+                    - generic [ref=e353]: El hermano del medio
+                    - img [ref=e355]
+                  - heading "Huevo N·1" [level=3] [ref=e360]
+          - listitem [ref=e361]:
+            - button "Huevo Super El Huevo Estrella Huevo Super" [ref=e363] [cursor=pointer]:
+              - generic [ref=e364]:
+                - img "Huevo Super" [ref=e366]
+                - generic [ref=e368]:
+                  - generic [ref=e369]:
+                    - generic [ref=e370]: El Huevo Estrella
+                    - img [ref=e372]
+                  - heading "Huevo Super" [level=3] [ref=e377]
+          - listitem [ref=e379]:
+            - button "Huevo Jumbo Doble Yema ! Huevo Jumbo" [ref=e381] [cursor=pointer]:
+              - generic [ref=e382]:
+                - img "Huevo Jumbo" [ref=e384]
+                - generic [ref=e386]:
+                  - generic [ref=e387]:
+                    - generic [ref=e388]: Doble Yema !
+                    - img [ref=e390]
+                  - heading "Huevo Jumbo" [level=3] [ref=e395]
+          - listitem [ref=e396]:
+            - button "Huevo Color El distinto Huevo Color" [ref=e398] [cursor=pointer]:
+              - generic [ref=e399]:
+                - img "Huevo Color" [ref=e401]
+                - generic [ref=e403]:
+                  - generic [ref=e404]:
+                    - generic [ref=e405]: El distinto
+                    - img [ref=e407]
+                  - heading "Huevo Color" [level=3] [ref=e412]
+      - region "Nuestro proceso" [ref=e186]:
+        - generic [ref=e188]:
+          - generic:
+            - img
+          - generic:
+            - img
+          - img
+          - img
+          - generic [ref=e189]:
+            - img [ref=e191]
+            - generic [ref=e193]:
+              - paragraph [ref=e194]: Proceso
+              - text: "01"
+              - heading "Recolección" [level=3] [ref=e195]
+              - paragraph [ref=e196]: Huevos recolectados a mano cada mañana de gallinas cuidadas.
+          - generic [ref=e197]:
+            - img [ref=e199]
+            - generic [ref=e202]:
+              - paragraph [ref=e203]: Proceso
+              - text: "02"
+              - heading "Selección y Clasificación" [level=3] [ref=e204]
+              - paragraph [ref=e205]: Cada huevo es inspeccionado y clasificado por tamaño y calidad.
+          - generic [ref=e206]:
+            - img [ref=e208]
+            - generic [ref=e212]:
+              - paragraph [ref=e213]: Proceso
+              - text: "03"
+              - heading "Empaque Premium" [level=3] [ref=e214]
+              - paragraph [ref=e215]: Packaging diseñado para proteger y preservar la frescura.
+          - generic [ref=e216]:
+            - img [ref=e218]
+            - generic [ref=e223]:
+              - paragraph [ref=e224]: Proceso
+              - text: "04"
+              - heading "Entrega" [level=3] [ref=e225]
+              - paragraph [ref=e226]: Entrega en el día directo a tu puerta. Frescura garantizada.
+      - region "Nuestras sucursales" [ref=e228]:
+        - generic [ref=e229]:
+          - generic:
+            - paragraph: Sucursales
+            - heading "Visitanos" [level=2]
+          - generic [ref=e230]:
+            - generic [ref=e231]:
+              - generic: "01"
+              - img "Fachada de Huevos Point en Roosevelt 2606" [ref=e232]
+              - generic [ref=e234]:
+                - heading "Roosevelt" [level=3] [ref=e235]
+                - paragraph [ref=e236]:
+                  - img [ref=e237]
+                  - text: Roosevelt 2606
+            - generic [ref=e240]:
+              - generic: "02"
+              - img "Fachada de Huevos Point en Amenábar 1546" [ref=e241]
+              - generic [ref=e243]:
+                - heading "Amenábar" [level=3] [ref=e244]
+                - paragraph [ref=e245]:
+                  - img [ref=e246]
+                  - text: Amenábar 1546
+      - region "Llamada a la acción" [ref=e249]:
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - img
+        - img
+        - img
+        - img
+        - generic [ref=e250]:
+          - paragraph [ref=e251]: CALIDAD QUE SE SIENTE
+          - heading "PROBA LA DIFERENCIA" [level=2] [ref=e252]
+          - paragraph [ref=e253]: Huevos seleccionados a mano, de granjas sustentables, entregados en el día. Hacé tu primer pedido y descubrí lo que es un huevo de verdad.
+          - button "Hacer mi pedido" [ref=e255]:
+            - generic [ref=e259]:
+              - generic [ref=e260]: Hacer
+              - generic [ref=e261]: mi pedido
+      - region "Contacto y pedidos" [ref=e262]:
+        - generic [ref=e264]:
+          - generic [ref=e265]:
+            - paragraph [ref=e266]: Contacto
+            - heading "Hacé tu pedido" [level=2] [ref=e267]
+            - paragraph [ref=e268]: Completá el formulario y te contactamos para confirmar. También podés escribirnos directo por WhatsApp.
+            - generic [ref=e269]:
+              - link "WhatsApp directo" [ref=e270]:
+                - /url: https://wa.me/5491168116492?text=Hola!%20Quiero%20hacer%20un%20pedido
+                - img [ref=e271]
+                - text: WhatsApp directo
+              - generic [ref=e273]:
+                - img [ref=e274]
+                - text: Roosevelt 2606, Belgrano.
+              - generic [ref=e277]:
+                - img [ref=e278]
+                - text: Amenabar 1534, Belgrano.
+            - generic:
+              - img "Huevos Point"
+          - generic [ref=e282]:
+            - generic [ref=e283]:
+              - text: Website
+              - textbox [ref=e284]
+            - generic [ref=e285]:
+              - generic [ref=e286]:
+                - generic [ref=e287]: Nombre completo *
+                - textbox "Nombre completo *" [ref=e288]:
+                  - /placeholder: Tu nombre
+              - generic [ref=e289]:
+                - generic [ref=e290]: Teléfono (WhatsApp) *
+                - textbox "Teléfono (WhatsApp) *" [ref=e291]:
+                  - /placeholder: +54 9 11 XXXX-XXXX
+              - generic [ref=e292]:
+                - generic [ref=e293]: Email
+                - textbox "Email" [ref=e294]:
+                  - /placeholder: tu@email.com
+              - generic [ref=e295]:
+                - generic [ref=e296]: Zona de entrega
+                - combobox "Zona de entrega" [ref=e297]:
+                  - option "Seleccioná tu zona" [selected]
+                  - option "CABA"
+              - generic [ref=e298]:
+                - generic [ref=e299]: Notas adicionales
+                - textbox "Notas adicionales" [ref=e300]:
+                  - /placeholder: Instrucciones especiales...
+                - generic [ref=e302]: 0/500
+              - button "ENVIAR" [ref=e304]:
+                - generic [ref=e309]: ENVIAR
+    - contentinfo [ref=e110]:
+      - generic [ref=e113]:
+        - generic [ref=e114]: Huevos Point
+        - generic [ref=e115]: De la granja a tu mesa
+        - generic [ref=e116]: Huevos Premium
+        - generic [ref=e117]: Calidad Superior
+        - generic [ref=e118]: Huevos Point
+        - generic [ref=e119]: De la granja a tu mesa
+        - generic [ref=e120]: Huevos Premium
+        - generic [ref=e121]: Calidad Superior
+        - generic [ref=e122]: Huevos Point
+        - generic [ref=e123]: De la granja a tu mesa
+        - generic [ref=e124]: Huevos Premium
+        - generic [ref=e125]: Calidad Superior
+        - generic [ref=e126]: Huevos Point
+        - generic [ref=e127]: De la granja a tu mesa
+        - generic [ref=e128]: Huevos Premium
+        - generic [ref=e129]: Calidad Superior
+        - generic [ref=e130]: Huevos Point
+        - generic [ref=e131]: De la granja a tu mesa
+        - generic [ref=e132]: Huevos Premium
+        - generic [ref=e133]: Calidad Superior
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - paragraph [ref=e137]: Huevos Point
+            - paragraph [ref=e138]: De la granja a tu mesa
+          - link "Contactar por WhatsApp" [ref=e139]:
+            - /url: https://wa.me/5491168116492
+            - img [ref=e140]
+            - text: WhatsApp
+        - paragraph [ref=e143]: © 2026 Huevos Point. Todos los derechos reservados.

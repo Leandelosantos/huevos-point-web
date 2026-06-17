@@ -113,3 +113,48 @@
   --color-yolk-deep: #003285;
   --color-shell: rgba(0, 74, 173, 0.15);
 }
+
+/* Botón con forma real de huevo (SVG de fondo + label superpuesto) */
+.btn-egg {
+  position: relative;
+  width: clamp(96px, 8vw, 132px);
+  aspect-ratio: 100 / 128;
+  height: auto;
+  background: transparent !important;
+  border-radius: 0 !important;
+  display: inline-flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 !important;
+  line-height: 1.3;
+  overflow: visible;
+}
+
+.btn-egg__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 24px rgba(245, 158, 11, 0.35));
+  transition: transform 0.3s ease;
+}
+
+.btn-egg:hover .btn-egg__shape,
+.btn-egg:focus-visible .btn-egg__shape {
+  transform: scale(1.05);
+}
+
+/* Variante grande — CTA "Hacer mi pedido" */
+.btn-egg--lg {
+  width: clamp(140px, 12vw, 200px);
+}
+
+.btn-egg__label {
+  position: relative;
+  z-index: 1;
+}
+

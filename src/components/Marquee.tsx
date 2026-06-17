@@ -2,15 +2,16 @@ import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
 import { cn } from '@/lib/utils';
+import { EggIllustration } from '@/components/illustrations/EggIllustration';
 import { MARQUEE_SPEED } from '@/constants/animation';
 
 interface MarqueeProps {
-  text: string;
+  words: readonly string[];
   speed?: number;
   className?: string;
 }
 
-export function Marquee({ text, speed = MARQUEE_SPEED, className }: MarqueeProps) {
+export function Marquee({ words, speed = MARQUEE_SPEED, className }: MarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -33,18 +34,31 @@ export function Marquee({ text, speed = MARQUEE_SPEED, className }: MarqueeProps
     });
   }, [speed]);
 
+  const renderGroup = (key: number) => (
+    <div key={key} className="inline-flex shrink-0 items-center">
+      {words.map((word, i) => (
+        <span key={i} className="inline-flex items-center">
+          <span className="font-display text-[clamp(2rem,6vw,5rem)] font-black uppercase leading-none tracking-tight text-bg-primary">
+            {word}
+          </span>
+          <EggIllustration
+            variant="cream"
+            rotate={i % 2 === 0 ? -8 : 8}
+            className="mx-6 h-[clamp(1.75rem,4.5vw,3.75rem)] w-auto shrink-0 md:mx-10"
+          />
+        </span>
+      ))}
+    </div>
+  );
+
   return (
     <div
       className={cn('marquee-wrapper overflow-hidden whitespace-nowrap', className)}
       aria-hidden="true"
     >
       <div ref={trackRef} className="marquee-track inline-flex">
-        <span className="inline-block font-display text-lg uppercase tracking-[0.2em] text-text-muted md:text-xl">
-          {text}
-        </span>
-        <span className="inline-block font-display text-lg uppercase tracking-[0.2em] text-text-muted md:text-xl">
-          {text}
-        </span>
+        {renderGroup(0)}
+        {renderGroup(1)}
       </div>
     </div>
   );

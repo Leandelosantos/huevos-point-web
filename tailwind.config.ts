@@ -27,10 +27,13 @@ const config: Config = {
         error: 'var(--color-error)',
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        heading: ['Instrument Serif', 'serif'],
-        body: ['Satoshi', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        display: ['Oswald', 'sans-serif'],
+        heading: ['Oswald', 'sans-serif'],
+        body: ['Oswald', 'sans-serif'],
+        mono: ['Oswald', 'sans-serif'],
+        'oswald': ['Oswald', 'sans-serif'],
+        'panther-bold': ['Point Panther Bold', 'sans-serif'],
+        'panther-outline': ['Point Panther Outline', 'sans-serif'],
       },
       fontSize: {
         'hero': ['clamp(2.5rem, 8vw + 1rem, 7.5rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],

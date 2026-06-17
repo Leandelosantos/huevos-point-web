@@ -113,7 +113,7 @@ export function PerspectiveMarquee({
               ref={(el) => { spansRef.current[i] = el; }}
               style={{
                 display: 'inline-block',
-                fontFamily: 'Playfair Display, serif',
+                fontFamily: 'Oswald, sans-serif',
                 fontSize,
                 fontWeight,
                 color,

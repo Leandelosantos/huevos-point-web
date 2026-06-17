@@ -22,7 +22,7 @@ export const PRODUCT_UNITS = ['maple', 'media_docena', 'docena', 'cajon'] as con
 export const PRODUCT_CATEGORIES = ['campo', 'organico', 'especial', 'premium'] as const;
 
 // ─── Marquee ───
-export const MARQUEE_TEXT = ' HUEVOS POINT • DE LA GRANJA A TU MESA • HUEVOS PREMIUM • CALIDAD SUPERIOR • ';
+export const MARQUEE_WORDS = ['HUEVOS POINT', 'FRESCURA', 'DE LA GRANJA', 'PREMIUM'] as const;
 
 // ─── Process Steps ───
 export const PROCESS_STEPS = [
@@ -45,5 +45,25 @@ export const PROCESS_STEPS = [
     number: '04',
     title: 'Entrega',
     description: 'Entrega en el día directo a tu puerta. Frescura garantizada.',
+  },
+] as const;
+
+// ─── Branches ───
+export const BRANCHES = [
+  {
+    id: 'roosevelt',
+    number: '01',
+    name: 'Roosevelt',
+    address: 'Roosevelt 2606',
+    image: '/images/roosevelt-frente.jpg',
+    imageAlt: 'Fachada de Huevos Point en Roosevelt 2606',
+  },
+  {
+    id: 'amenabar',
+    number: '02',
+    name: 'Amenábar',
+    address: 'Amenábar 1546',
+    image: '/images/amenabar-frente.jpg',
+    imageAlt: 'Fachada de Huevos Point en Amenábar 1546',
   },
 ] as const;

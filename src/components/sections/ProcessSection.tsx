@@ -1,51 +1,56 @@
-import { useRef } from 'react';
-import { Egg, Search, Package, Truck } from 'lucide-react';
-import { useGSAP } from '@/hooks/useGSAP';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
-import { PROCESS_STEPS } from '@/constants/business';
+import { useRef } from "react";
+import { Egg, Search, Package, Truck } from "lucide-react";
+import { useGSAP } from "@/hooks/useGSAP";
+import { gsap, ScrollTrigger } from "@/lib/gsap-config";
+import { PROCESS_STEPS } from "@/constants/business";
 import {
   PROCESS_STEP_FADE_IN_Y,
   PROCESS_STEP_FADE_OUT_Y,
-} from '@/constants/animation';
-import { EggIllustration } from '@/components/illustrations/EggIllustration';
-import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
-import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
+} from "@/constants/animation";
+import { EggIllustration } from "@/components/illustrations/EggIllustration";
+import { SparkleDecoration } from "@/components/illustrations/SparkleDecoration";
+import { FloatingIllustration } from "@/components/illustrations/FloatingIllustration";
 
 const STEP_ICONS = [Egg, Search, Package, Truck];
 
 export function ProcessSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const section = sectionRef.current;
-      if (!section) return;
+      const header = headerRef.current;
+      if (!section || !header) return;
 
       ScrollTrigger.matchMedia({
         // Desktop: full pin with stepper
-        '(min-width: 1024px)': () => {
-          const steps = gsap.utils.toArray<HTMLElement>('.process-step');
+        "(min-width: 1024px)": () => {
+          const steps = gsap.utils.toArray<HTMLElement>(".process-step");
 
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               pin: true,
               scrub: 0.5,
-              start: 'top top',
+              start: "top top",
               end: `+=${steps.length * 100}%`,
             },
           });
+
+          // Título desaparece apenas arranca el scroll, no se queda fijo
+          tl.to(header, { opacity: 0, duration: 0.4 }, 0);
 
           steps.forEach((step, i) => {
             // Fade in
             tl.fromTo(
               step,
               { opacity: 0, y: PROCESS_STEP_FADE_IN_Y },
-              { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }
+              { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
             );
 
             // Animate step counter via text content
-            const counter = step.querySelector('.step-counter');
+            const counter = step.querySelector(".step-counter");
             if (counter) {
               tl.to(
                 counter,
@@ -53,7 +58,7 @@ export function ProcessSection() {
                   text: { value: PROCESS_STEPS[i].number },
                   duration: 0.3,
                 },
-                '<'
+                "<",
               );
             }
 
@@ -62,51 +67,53 @@ export function ProcessSection() {
               tl.to(
                 step,
                 { opacity: 0, y: PROCESS_STEP_FADE_OUT_Y, duration: 0.5 },
-                '+=0.5'
+                "+=0.5",
               );
             }
           });
         },
 
         // Tablet: pin with reduced distance
-        '(min-width: 768px) and (max-width: 1023px)': () => {
-          const steps = gsap.utils.toArray<HTMLElement>('.process-step');
+        "(min-width: 768px) and (max-width: 1023px)": () => {
+          const steps = gsap.utils.toArray<HTMLElement>(".process-step");
 
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               pin: true,
               scrub: 0.5,
-              start: 'top top',
+              start: "top top",
               end: `+=${steps.length * 80}%`,
             },
           });
+
+          tl.to(header, { opacity: 0, duration: 0.4 }, 0);
 
           steps.forEach((step, i) => {
             tl.fromTo(
               step,
               { opacity: 0, y: 40 },
-              { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }
+              { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
             );
             if (i < steps.length - 1) {
-              tl.to(step, { opacity: 0, y: -30, duration: 0.5 }, '+=0.3');
+              tl.to(step, { opacity: 0, y: -30, duration: 0.5 }, "+=0.3");
             }
           });
         },
 
         // Mobile: simple vertical scroll reveal, no pin
-        '(max-width: 767px)': () => {
-          const steps = gsap.utils.toArray<HTMLElement>('.process-step-mobile');
+        "(max-width: 767px)": () => {
+          const steps = gsap.utils.toArray<HTMLElement>(".process-step-mobile");
 
           steps.forEach((step) => {
             gsap.from(step, {
               y: 30,
               opacity: 0,
               duration: 0.6,
-              ease: 'power2.out',
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: step,
-                start: 'top 85%',
+                start: "top 85%",
               },
             });
           });
@@ -114,7 +121,7 @@ export function ProcessSection() {
       });
     },
     [],
-    sectionRef
+    sectionRef,
   );
 
   return (
@@ -126,7 +133,19 @@ export function ProcessSection() {
     >
       {/* Desktop / Tablet: pinned stepper */}
       <div className="hidden h-screen items-center justify-center md:flex">
-        <div className="relative mx-auto h-56 w-full max-w-3xl px-6">
+        <div className="relative mx-auto flex h-screen w-full max-w-3xl items-center px-6 text-oswald-bold">
+          {/* ── Título de sección — visible solo al entrar, se desvanece con el primer scroll ── */}
+          <div
+            ref={headerRef}
+            className="pointer-events-none absolute inset-x-0 top-10 z-20 text-center lg:top-16"
+          >
+            <p className="font-mono text-lg uppercase tracking-widest text-yolk">
+              Proceso
+            </p>
+            <h2 className="mt-2 font-heading text-8xl text-text-primary">
+              DEL CAMPO A TU PUERTA
+            </h2>
+          </div>
 
           {/* ── Huevos decorativos flotantes (fondo, detrás del contenido) ── */}
           <FloatingIllustration
@@ -155,17 +174,12 @@ export function ProcessSection() {
             color="#F0EAD6"
             variant="cross"
           />
-          {/* Section label */}
-          <p className="absolute -top-16 left-6 font-mono text-sm uppercase tracking-widest text-yolk lg:left-0">
-            Proceso
-          </p>
-
           {PROCESS_STEPS.map((step, index) => {
             const Icon = STEP_ICONS[index];
             return (
               <div
                 key={step.number}
-                className="process-step absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center gap-12 px-6 opacity-0 lg:px-0"
+                className="process-step absolute inset-x-0 inset-y-0 flex items-center gap-12 px-6 opacity-0 lg:px-0"
                 style={index === 0 ? {} : { opacity: 0 }}
               >
                 {/* Step icon */}
@@ -175,13 +189,16 @@ export function ProcessSection() {
 
                 {/* Step content */}
                 <div>
+                  <p className="font-mono text-lg uppercase tracking-widest text-yolk">
+                    Proceso
+                  </p>
                   <span className="step-counter font-mono text-8xl font-bold text-text-primary/10">
                     {step.number}
                   </span>
-                  <h3 className="mt-2 font-heading text-5xl text-text-primary lg:text-6xl">
+                  <h3 className="mt-2 font-heading text-5xl text-text-primary lg:text-9xl">
                     {step.title}
                   </h3>
-                  <p className="mt-3 max-w-xl font-body text-xl text-text-secondary">
+                  <p className="mt-3 max-w-xl font-body text-4xl text-text-secondary">
                     {step.description}
                   </p>
                 </div>
@@ -198,7 +215,7 @@ export function ProcessSection() {
             Proceso
           </p>
           <h2 className="mt-3 font-heading text-section text-text-primary">
-            Del campo a tu puerta
+            DEL CAMPO A TU PUERTA
           </h2>
         </div>
 

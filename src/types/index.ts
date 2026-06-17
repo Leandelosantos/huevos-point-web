@@ -87,7 +87,7 @@ export const orderSchema = z.object({
       'Ingresá un número de teléfono argentino válido'
     ),
   customer_email: z.email('Ingresá un email válido').optional().or(z.literal('')),
-  items: z.array(orderItemSchema).min(1, 'Agregá al menos un producto'),
+  items: z.array(orderItemSchema),
   notes: z.string().max(500, 'Las notas no pueden superar los 500 caracteres').optional(),
   delivery_zone: z.string().optional(),
   total_estimate: z.number().nonnegative(),

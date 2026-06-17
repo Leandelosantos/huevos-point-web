@@ -11,7 +11,7 @@ export default function EggCanvas({ progressRef }: EggCanvasProps) {
       frameloop="always"
       dpr={[1, 2]}
       camera={{ position: [0, 0, 4], fov: 45 }}
-      gl={{ powerPreference: 'high-performance', antialias: true }}
+      gl={{ powerPreference: 'high-performance', antialias: true, alpha: true }}
       style={{
         position: 'absolute',
         top: 0,

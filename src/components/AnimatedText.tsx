@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
 import { cn } from '@/lib/utils';
+import { useAppStore } from '@/stores/useAppStore';
 import { HERO_TITLE_STAGGER, HERO_TITLE_EASE } from '@/constants/animation';
 
 interface AnimatedTextProps {
@@ -24,6 +25,7 @@ export function AnimatedText({
   scrollTrigger = false,
 }: AnimatedTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isLoading = useAppStore((state) => state.isLoading);
 
   useGSAP(
     () => {
@@ -32,6 +34,13 @@ export function AnimatedText({
 
       const chars = container.querySelectorAll('.animated-char');
       if (!chars.length) return;
+
+      // Mientras el Loader está activo, mantener los caracteres ocultos
+      // para no "gastar" la animación de entrada detrás del preloader.
+      if (isLoading) {
+        gsap.set(chars, { y: 40, opacity: 0 });
+        return;
+      }
 
       const animConfig: gsap.TweenVars = {
         y: 40,
@@ -51,7 +60,7 @@ export function AnimatedText({
 
       gsap.from(chars, animConfig);
     },
-    [stagger, ease, delay, scrollTrigger]
+    [stagger, ease, delay, scrollTrigger, isLoading]
   );
 
   const words = text.split(' ');

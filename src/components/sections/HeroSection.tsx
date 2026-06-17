@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { useIsMobile } from '@/hooks/useMediaQuery';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useIsMobile, usePrefersReducedMotion } from '@/hooks/useMediaQuery';
 import { ChevronDown } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
@@ -11,19 +11,38 @@ import { FloatingIllustration } from '@/components/illustrations/FloatingIllustr
 import {
   PARALLAX_HERO_GRAIN_SPEED,
   PARALLAX_HERO_TITLE_SPEED,
-  PARALLAX_HERO_SUBTITLE_SPEED,
 } from '@/constants/animation';
+
+const EggCanvas = lazy(() => import('@/components/EggCanvas'));
+
+const EGG_SHAPE_PATH =
+  'M 50 5 C 24 5 8 38 8 66 C 8 100 26 123 50 123 C 74 123 92 100 92 66 C 92 38 76 5 50 5 Z';
 
 export function HeroSection() {
   const isMobile   = useIsMobile();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const grainRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const henRef = useRef<HTMLDivElement>(null);
   const egg1Ref = useRef<HTMLDivElement>(null);
   const egg2Ref = useRef<HTMLDivElement>(null);
+  const eggCanvasWrapRef = useRef<HTMLDivElement>(null);
+  const eggLabelRef = useRef<HTMLSpanElement>(null);
+  const isBreakingRef = useRef(false);
+  const eggProgressRef = useRef(0);
+  const [show3DEgg, setShow3DEgg] = useState(false);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(() => setShow3DEgg(true));
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setShow3DEgg(true), 200);
+    return () => window.clearTimeout(id);
+  }, [prefersReducedMotion]);
 
   useGSAP(
     () => {
@@ -70,15 +89,6 @@ export function HeroSection() {
       if (titleRef.current) {
         gsap.to(titleRef.current, {
           yPercent: PARALLAX_HERO_TITLE_SPEED * 100,
-          opacity: 0,
-          ease: 'none',
-          ...parallaxBase,
-        });
-      }
-
-      if (subtitleRef.current) {
-        gsap.to(subtitleRef.current, {
-          yPercent: PARALLAX_HERO_SUBTITLE_SPEED * 100,
           opacity: 0,
           ease: 'none',
           ...parallaxBase,
@@ -151,6 +161,60 @@ export function HeroSection() {
     }
   };
 
+  // Animación "huevo se resquebraja" → al terminar, recién entonces scrollea
+  const handleEggClick = () => {
+    if (prefersReducedMotion) {
+      scrollToStory();
+      return;
+    }
+
+    if (isBreakingRef.current) return;
+    isBreakingRef.current = true;
+
+    const wrap = eggCanvasWrapRef.current;
+    const label = eggLabelRef.current;
+    if (!wrap || !label) {
+      scrollToStory();
+      isBreakingRef.current = false;
+      return;
+    }
+
+    const progress = { value: 0 };
+    const tl = gsap.timeline({
+      onComplete: () => {
+        scrollToStory();
+        // Restaura el huevo una vez que la sección ya quedó fuera de vista
+        gsap.delayedCall(1.4, () => {
+          tl.progress(0).pause();
+          eggProgressRef.current = 0;
+          gsap.set([wrap, label], { clearProps: 'all' });
+          isBreakingRef.current = false;
+        });
+      },
+    });
+
+    // Tiembla antes de quebrarse
+    tl.to(wrap, { rotation: -3, x: -2, duration: 0.07, ease: 'power1.inOut', force3D: true })
+      .to(wrap, { rotation: 3, x: 2, duration: 0.07, ease: 'power1.inOut', force3D: true })
+      .to(wrap, { rotation: -2, x: -1, duration: 0.07, ease: 'power1.inOut', force3D: true })
+      .to(wrap, { rotation: 0, x: 0, duration: 0.07, ease: 'power1.inOut', force3D: true })
+      // El huevo 3D se abre y la yema cae
+      .to(
+        progress,
+        {
+          value: 1,
+          duration: 1.1,
+          ease: 'power2.in',
+          onUpdate: () => {
+            eggProgressRef.current = progress.value;
+          },
+        },
+        '+=0.05'
+      )
+      .to(wrap, { opacity: 0, duration: 0.3 }, '-=0.3')
+      .to(label, { opacity: 0, scale: 0.85, duration: 0.25 }, '<');
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -182,7 +246,7 @@ export function HeroSection() {
       />
 
       {/* ── Logo — elemento principal, esquina derecha ── */}
-      <div
+      {/* <div
         ref={henRef}
         className="pointer-events-none absolute bottom-0 right-[-20px] z-[3] w-[280px] select-none
                    sm:w-[340px] md:right-[-10px] md:w-[380px] lg:right-0 lg:w-[460px]"
@@ -201,7 +265,7 @@ export function HeroSection() {
             draggable={false}
           />
         </FloatingIllustration>
-      </div>
+      </div> */}
 
       {/* ── Huevos decorativos — capas de profundidad ── */}
       <div
@@ -240,47 +304,61 @@ export function HeroSection() {
         variant="star4"
       />
 
-      {/* ── Título vanguardista — dos líneas, tamaño extremo ── */}
+      {/* ── Título vanguardista — centrado, logo inline ── */}
       <div
         ref={titleRef}
-        className="absolute inset-0 z-[4] flex flex-col justify-center px-6 md:px-14 lg:px-20"
+        className="absolute inset-0 z-[4] flex flex-col items-center justify-center gap-2 px-2 text-center md:px-8"
       >
         {/* Label */}
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-yolk md:text-base">
+        <p className="font-oswald font-normal text-[10px] uppercase tracking-[0.3em] text-yolk md:text-base">
+          De la granja a tu mesa
+        </p>
+
+        {/* "HUEVOS POINT" — una línea centrada */}
+        <div className="hero-title flex w-full flex-row flex-nowrap items-center justify-center gap-8 text-[clamp(2.4rem,9vw,12rem)] lg:text-[clamp(2.4rem,10vw,13rem)]">
+          <div className="overflow-hidden">
+            <AnimatedText
+              text="HUEVOS"
+              as="h1"
+              className="block font-oswald font-bold leading-[0.88] tracking-[0.05em] text-text-primary [transform:scaleY(1.15)] text-[clamp(2.8rem,11vw,14rem)] lg:text-[clamp(3rem,14.5vw,17rem)]"
+              delay={0.35}
+            />
+          </div>
+
+          <div className="overflow-hidden">
+            <AnimatedText
+              text="POINT"
+              as="span"
+              className="block font-oswald font-bold leading-[0.88] tracking-[0.05em] text-text-primary [transform:scaleY(1.15)] text-[clamp(2.8rem,11vw,14rem)] lg:text-[clamp(3rem,14.5vw,17rem)]"
+              delay={0.5}
+            />
+          </div>
+        </div>
+
+        {/* Sub-label */}
+        <p className="font-oswald font-normal text-[10px] uppercase tracking-[0.5em] text-yolk md:text-base">
           Huevos de verdad
         </p>
 
-        {/* "Huevos" — relleno sólido */}
-        <div className="mt-1 overflow-hidden">
-          <AnimatedText
-            text="De la granja"
-            as="h1"
-            className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-text-primary text-[clamp(3.8rem,14vw,14rem)]"
-            delay={0.35}
-          />
-        </div>
-
-        {/* "Point" — outline: efecto tipográfico vanguardista */}
-        <div className="overflow-hidden pl-[0.12em]">
-          <AnimatedText
-            text="a tu mesa"
-            as="span"
-            className="block font-display font-black leading-[0.88] tracking-[-0.04em] text-transparent text-[clamp(3.8rem,14vw,14rem)] [-webkit-text-stroke:2px_var(--color-text-primary)]"
-            delay={0.5}
-          />
-        </div>
-      </div>
-
-      {/* ── Subtitle + CTA ── */}
-      <div
-        ref={subtitleRef}
-        className="absolute bottom-[5vh] z-[5] flex flex-col items-start gap-6 px-6 md:px-14 lg:px-20"
-      >
-        {/* <p className="font-heading text-lg text-text-secondary md:text-xl">
-          Del campo a tu mesa
-        </p> */}
-        <MagneticButton onClick={scrollToStory}>
-          Descubrí más
+        {/* CTA — botón con forma de huevo, se resquebraja al hacer click */}
+        <MagneticButton
+          onClick={handleEggClick}
+          className="btn-egg mt-4 text-brand-blue text-xs font-bold uppercase tracking-wider md:mt-8"
+        >
+          <div ref={eggCanvasWrapRef} className="btn-egg__shape">
+            {show3DEgg ? (
+              <Suspense fallback={null}>
+                <EggCanvas progressRef={eggProgressRef} />
+              </Suspense>
+            ) : (
+              <svg viewBox="0 0 100 128" preserveAspectRatio="none" aria-hidden="true" className="h-full w-full">
+                <path d={EGG_SHAPE_PATH} fill="var(--color-yolk)" />
+              </svg>
+            )}
+          </div>
+          <span ref={eggLabelRef} className="btn-egg__label flex flex-col items-center gap-0.5">
+            <span>ROMPER</span>
+          </span>
         </MagneticButton>
       </div>
 

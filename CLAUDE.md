@@ -3,6 +3,9 @@
 ## Idioma
 Siempre responder en español latinoamericano (Argentina). Sin excepciones.
 
+## Verificación con Playwright
+No testear cada modificación con Playwright MCP automáticamente. Solo usarlo cuando el usuario lo pida explícitamente. `tsc --noEmit` sigue siendo obligatorio tras cada cambio.
+
 ## Proyecto
 Landing page SPA premium scroll-driven para Huevos Point (Premium Egg Retail).
 Leer el SRS completo antes de cualquier tarea: `./SRS_HuevosPointWeb.md`
@@ -10,7 +13,6 @@ Leer el SRS completo antes de cualquier tarea: `./SRS_HuevosPointWeb.md`
 ## Stack
 - React 18 + Vite + TypeScript
 - GSAP 3 + ScrollTrigger (único engine de animación — nunca usar CSS animations para secuencias complejas)
-- Supabase (PostgreSQL + Storage + Edge Functions)
 - Zustand (solo UI state y form state — nunca para datos de servidor)
 - Tailwind CSS + Shadcn/UI
 - react-hook-form + Zod
@@ -19,15 +21,6 @@ Leer el SRS completo antes de cualquier tarea: `./SRS_HuevosPointWeb.md`
 ## Estructura de archivos
 Respetar estrictamente la estructura definida en el SRS sección 2.3.
 No crear archivos fuera de esa estructura sin confirmar primero.
-
-## Base de datos (Supabase)
-- Tablas: `products`, `orders`, `contact_messages`
-- RLS activo:
-  - `products` → SELECT público permitido
-  - `orders` → solo INSERT público
-  - `contact_messages` → solo INSERT público
-- Antes de cualquier migración: mostrar el SQL completo y esperar confirmación explícita
-- Nunca exponer `service_role` key en el cliente
 
 ## Reglas de animación (crítico para 60fps)
 - Solo animar `transform` y `opacity`. NUNCA `width`, `height`, `top`, `left`, `margin`, `padding`
@@ -67,7 +60,6 @@ Están en `.claude/skills/` — consultarlas antes de ejecutar tareas relacionad
 | `scroll-experience` | GSAP, ScrollTrigger, parallax, animaciones |
 | `ui-ux-pro-max` | Design system, componentes, tipografía |
 | `remotion` | Video programático si se requiere |
-| `supabase-postgres-best-practices` | Migraciones, queries, RLS, Storage |
 
 ## Cuándo actuar vs preguntar
 **Actuar solo:**
@@ -76,14 +68,12 @@ Están en `.claude/skills/` — consultarlas antes de ejecutar tareas relacionad
 - Tests unitarios y de integración
 
 **Preguntar siempre:**
-- Migraciones SQL o cambios en RLS
 - Instalación de dependencias nuevas no listadas en el SRS
 - Cambios que afecten la arquitectura definida en el SRS sección 2.2
 - Cualquier operación irreversible
 
 **Nunca tocar sin confirmación explícita:**
 - `.env.local`
-- Políticas RLS en producción
 - Archivos de configuración raíz (`vite.config.ts`, `tsconfig.json`, `tailwind.config.ts`)
 
 ## Performance — objetivos no negociables
@@ -102,3 +92,9 @@ Cuando se resuelva un problema no trivial, registrarlo en `~/.claude/lessons.md`
 - **Problema:** descripción breve
 - **Solución:** qué funcionó
 - **Contexto:** stack / sección del proyecto
+
+## Memoria persistente del proyecto
+Existe `./memory.md` en la raíz — registro acumulativo de lo desarrollado en el proyecto.
+
+- **Comando "Actualizar memoria"**: al recibir esta instrucción, agregar al final de `memory.md` un resumen de todo lo desarrollado/decidido en la sesión actual (cambios de código, decisiones de diseño, pendientes). No sobreescribir lo anterior, solo añadir.
+- **Al inicio de cada sesión / tras cada compactación**: leer `CLAUDE.md` Y `memory.md` para conocer el estado actual del proyecto y los últimos cambios antes de continuar.

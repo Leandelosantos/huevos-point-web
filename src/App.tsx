@@ -4,7 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { Marquee } from '@/components/Marquee';
-import { MARQUEE_TEXT } from '@/constants/business';
+import { MARQUEE_WORDS } from '@/constants/business';
 import { useAppStore } from '@/stores/useAppStore';
 
 // Lazy load below-the-fold sections for bundle splitting
@@ -16,6 +16,9 @@ const ProductsSection = lazy(() =>
 );
 const ProcessSection = lazy(() =>
   import('@/components/sections/ProcessSection').then((m) => ({ default: m.ProcessSection }))
+);
+const BranchesSection = lazy(() =>
+  import('@/components/sections/BranchesSection').then((m) => ({ default: m.BranchesSection }))
 );
 const CTASection = lazy(() =>
   import('@/components/sections/CTASection').then((m) => ({ default: m.CTASection }))
@@ -37,7 +40,7 @@ export default function App() {
       <Navbar />
       <main id="main-content">
         <HeroSection />
-        <Marquee text={MARQUEE_TEXT} className="py-8 bg-brand-blue" />
+        <Marquee words={MARQUEE_WORDS} className="py-6 bg-yolk md:py-10" />
         <Suspense fallback={<SectionFallback />}>
           <StorySection />
         </Suspense>
@@ -46,6 +49,9 @@ export default function App() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <ProcessSection />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <BranchesSection />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <CTASection />

@@ -287,7 +287,7 @@ export function Navbar() {
           </button>
 
           {/* Nav links — z-[15] explícito, <a> block full-width para hit area completo */}
-          <div className="relative z-[15] flex h-full flex-col justify-center px-12 lg:px-24">
+          <div className="relative z-[15] flex h-full flex-col justify-center px-6 sm:px-12 lg:px-24">
             <ul className="flex flex-col gap-2">
               {NAV_LINKS.map((link) => (
                 <li key={link.href} className="menu-list-item overflow-hidden" data-shape={link.shape}>
