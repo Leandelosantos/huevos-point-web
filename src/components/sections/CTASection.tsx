@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useRef } from 'react';
 import { useGSAP } from '@/hooks/useGSAP';
 import { gsap } from '@/lib/gsap-config';
 import { usePrefersReducedMotion } from '@/hooks/useMediaQuery';
+import { useLazyOnApproach } from '@/hooks/useLazyOnApproach';
 import { MagneticButton } from '@/components/MagneticButton';
 import {
   CTA_BG_TRANSITION_START,
@@ -28,17 +29,7 @@ export function CTASection() {
   const eggLabelRef = useRef<HTMLSpanElement>(null);
   const isBreakingRef = useRef(false);
   const eggProgressRef = useRef(0);
-  const [show3DEgg, setShow3DEgg] = useState(false);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(() => setShow3DEgg(true));
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setShow3DEgg(true), 200);
-    return () => window.clearTimeout(id);
-  }, [prefersReducedMotion]);
+  const show3DEgg = useLazyOnApproach(sectionRef, !prefersReducedMotion);
 
   useGSAP(
     () => {

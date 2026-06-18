@@ -1,13 +1,13 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { useIsMobile, usePrefersReducedMotion } from '@/hooks/useMediaQuery';
+import { lazy, Suspense, useRef } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/useMediaQuery';
 import { ChevronDown } from 'lucide-react';
 import { useGSAP } from '@/hooks/useGSAP';
+import { useLazyOnApproach } from '@/hooks/useLazyOnApproach';
 import { gsap, ScrollTrigger } from '@/lib/gsap-config';
 import { AnimatedText } from '@/components/AnimatedText';
 import { MagneticButton } from '@/components/MagneticButton';
 import { EggIllustration } from '@/components/illustrations/EggIllustration';
 import { SparkleDecoration } from '@/components/illustrations/SparkleDecoration';
-import { FloatingIllustration } from '@/components/illustrations/FloatingIllustration';
 import {
   PARALLAX_HERO_GRAIN_SPEED,
   PARALLAX_HERO_TITLE_SPEED,
@@ -19,7 +19,6 @@ const EGG_SHAPE_PATH =
   'M 50 5 C 24 5 8 38 8 66 C 8 100 26 123 50 123 C 74 123 92 100 92 66 C 92 38 76 5 50 5 Z';
 
 export function HeroSection() {
-  const isMobile   = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const grainRef = useRef<HTMLDivElement>(null);
@@ -32,17 +31,7 @@ export function HeroSection() {
   const eggLabelRef = useRef<HTMLSpanElement>(null);
   const isBreakingRef = useRef(false);
   const eggProgressRef = useRef(0);
-  const [show3DEgg, setShow3DEgg] = useState(false);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(() => setShow3DEgg(true));
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setShow3DEgg(true), 200);
-    return () => window.clearTimeout(id);
-  }, [prefersReducedMotion]);
+  const show3DEgg = useLazyOnApproach(sectionRef, !prefersReducedMotion);
 
   useGSAP(
     () => {

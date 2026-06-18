@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useEffect, useState } from "react";
+import { lazy, Suspense, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Phone, MapPin, AlertCircle, Loader2 } from "lucide-react";
@@ -10,6 +10,7 @@ import { orderSchema, type OrderFormValues } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { WHATSAPP_NUMBER, DELIVERY_ZONES } from "@/constants/business";
 import { usePrefersReducedMotion } from "@/hooks/useMediaQuery";
+import { useLazyOnApproach } from "@/hooks/useLazyOnApproach";
 import { MagneticButton } from "@/components/MagneticButton";
 
 const EggCanvas = lazy(() => import("@/components/EggCanvas"));
@@ -33,24 +34,14 @@ export function ContactSection() {
   const eggLabelRef = useRef<HTMLSpanElement>(null);
   const isBreakingRef = useRef(false);
   const eggProgressRef = useRef(0);
-  const [show3DEgg, setShow3DEgg] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const show3DEgg = useLazyOnApproach(sectionRef, !prefersReducedMotion);
 
   const orderItems = useAppStore((state) => state.orderItems);
   const clearOrder = useAppStore((state) => state.clearOrder);
   const getOrderTotal = useAppStore((state) => state.getOrderTotal);
 
   const { status, submit, reset: resetSubmit } = useOrderSubmit();
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(() => setShow3DEgg(true));
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setShow3DEgg(true), 200);
-    return () => window.clearTimeout(id);
-  }, [prefersReducedMotion]);
 
   const {
     register,
